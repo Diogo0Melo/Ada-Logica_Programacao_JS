@@ -47,6 +47,7 @@ for (var i in reciboDeVenda) {
 
         produto = produto[0].toUpperCase() + produto.substring(1);
         infosProduto.produto = produto
+        var tempProduto = produto
         produto = ""
         continue
     }
@@ -59,6 +60,19 @@ for (var i in reciboDeVenda) {
     else if (reciboDeVenda[i] == ";") {
         infosProduto.cupom = cupom
         infosProduto.quantidade = quantidade
+        for (var j in listaProdutos) {
+            console.log("entrou no for")
+            if (listaProdutos[j].produto == tempProduto) {
+                console.log("et1212a")
+                listaProdutos[j].quantidade += 1
+            }
+            else {
+                listaProdutos.push({ ...infosProduto })
+
+            }
+            console.log("ainda no for")
+            break
+        }
         listaProdutos.push({ ...infosProduto })
         cupom = 0
         produto = ""
@@ -68,7 +82,7 @@ for (var i in reciboDeVenda) {
         if (reciboDeVenda[i] == ".") {
             i++
             valor += parseFloat("." + reciboDeVenda[i])
-            
+
         }
         else {
             valor += +reciboDeVenda[i]
@@ -86,5 +100,27 @@ for (var i in reciboDeVenda) {
 console.log(infosProduto)
 console.log(listaProdutos)
 
+// let listaContador = []
+
+// for (var i in listaProdutos){
+//     listaContador.push(listaProdutos[i].produto)
+// }
+// listaContador.sort()
+// // for (var i in listaContador){
+// //     var contador =  listaContador.indexOf(listaContador[i])
+// //     console.log(contador)
+// //     listaProdutos[i].quantidade = contador
+// //     Number(i)
+// //     i += contador
+// //     contador = 0
+// // }
+// for (var i of listaContador){
+//     var posicaoProduto = listaProdutos.indexOf()
+//     console.log(i)
+//     console.log(posicaoProduto)
+//     listaProdutos = listaProdutos[posicaoProduto].quantidade += 1
+// }
 
 
+// console.log()
+// console.log(listaProdutos)
