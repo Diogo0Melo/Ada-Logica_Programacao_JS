@@ -41,36 +41,41 @@ let produto = ""
 let valor = 0
 let cupom = 0
 let quantidade = 0
-for (i in reciboDeVenda) {
-    
-    if (reciboDeVenda[i] === "/") {
+for (var i in reciboDeVenda) {
+
+    if (reciboDeVenda[i] == "/") {
+
         produto = produto[0].toUpperCase() + produto.substring(1);
         infosProduto.produto = produto
-        for (i2 in reciboDeVenda){
-            i = Number(i)
-            i += 6
-            if (reciboDeVenda[i] === "="){
-                infosProduto.valor = valor
-                for (i2 in reciboDeVenda){
-                    i += 7
-                    if (reciboDeVenda[i] === ";"){
-                        infosProduto.cupom = cupom
-                        infosProduto.quantidade = quantidade
-                        break 
-                    }
-                    cupom += Number(reciboDeVenda[i])
-                    i -= 6
-                    
-                    
-                }
-            }
-            valor += Number(reciboDeVenda[i])
-            i -= 5
-        }
-
-        break
+        produto = ""
+        continue
     }
-    produto = produto + reciboDeVenda[i]
+    else if (reciboDeVenda[i] == "="){
+        infosProduto.valor = valor
+        valor = 0
+        produto = ""
+        continue
+    }
+    else if (reciboDeVenda[i] == ";"){
+        infosProduto.cupom = cupom
+        infosProduto.quantidade = quantidade
+        listaProdutos.push(infosProduto)
+        listaProdutos.copyWithin()
+        cupom = 0
+        produto = ""
+        continue
+    }
+    else if (produto == "valor"){
+        valor += Number(reciboDeVenda[i])
+        continue
+        }
+    else if (produto == "cupom"){
+        cupom += Number(reciboDeVenda[i])
+        continue
+    }
+    produto += reciboDeVenda[i]
+
 }
 
 console.log(infosProduto)
+console.log(listaProdutos)
