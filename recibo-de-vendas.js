@@ -50,27 +50,33 @@ for (var i in reciboDeVenda) {
         produto = ""
         continue
     }
-    else if (reciboDeVenda[i] == "="){
+    else if (reciboDeVenda[i] == "=") {
         infosProduto.valor = valor
         valor = 0
         produto = ""
         continue
     }
-    else if (reciboDeVenda[i] == ";"){
+    else if (reciboDeVenda[i] == ";") {
         infosProduto.cupom = cupom
         infosProduto.quantidade = quantidade
-        listaProdutos.push(infosProduto)
-        listaProdutos.copyWithin()
+        listaProdutos.push({ ...infosProduto })
         cupom = 0
         produto = ""
         continue
     }
-    else if (produto == "valor"){
-        valor += Number(reciboDeVenda[i])
-        continue
+    else if (produto == "valor") {
+        if (reciboDeVenda[i] == ".") {
+            i++
+            valor += parseFloat("." + reciboDeVenda[i])
+            
         }
-    else if (produto == "cupom"){
-        cupom += Number(reciboDeVenda[i])
+        else {
+            valor += +reciboDeVenda[i]
+            continue
+        }
+    }
+    else if (produto == "cupom") {
+        cupom += +reciboDeVenda[i]
         continue
     }
     produto += reciboDeVenda[i]
@@ -79,3 +85,6 @@ for (var i in reciboDeVenda) {
 
 console.log(infosProduto)
 console.log(listaProdutos)
+
+
+
