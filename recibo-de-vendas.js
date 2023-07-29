@@ -63,13 +63,13 @@ for (var i in reciboDeVenda) {
             if (infosProduto.produto == listaProdutos[j].produto) {
                 listaProdutos[j].quantidade += 1
             }
-            else{
+            else {
                 continue
             }
             sairLoop = true
             break
         }
-        if(sairLoop){
+        if (sairLoop) {
             cupom = 0
             produto = ""
             continue
@@ -105,14 +105,93 @@ let total = {}
 let totalConta = 0
 let quantidadeConta = 0
 let cupomConta = 0
-for (var i in listaProdutos){
+for (var i in listaProdutos) {
     let subTotalConta = (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
     quantidadeConta += listaProdutos[i].quantidade
     cupomConta += listaProdutos[i].cupom
     totalConta += subTotalConta
 }
-console.log(totalConta, cupomConta, quantidadeConta)
 
 total.valorTotal = totalConta, total.valorTotalDesconto = cupomConta, total.quantidadeDeProdutos = quantidadeConta
 
 console.log(total)
+
+
+function gerarRecibo() {
+    let lista = document.getElementById('lista');
+    let tHead = document.getElementById("tHead");
+    let tBody = document.getElementById("tBody");
+    let th = document.createElement("th");
+    let tr = document.createElement("tr");
+    th.appendChild(document.createTextNode("Produto"));
+    tHead.appendChild(th);
+    th = document.createElement("th");
+    th.appendChild(document.createTextNode("Valor"));
+    tHead.appendChild(th);
+    th = document.createElement("th");
+    th.appendChild(document.createTextNode("Desconto"));
+    tHead.appendChild(th);
+    th = document.createElement("th");
+    th.appendChild(document.createTextNode("Quantidade"));
+    tHead.appendChild(th);
+
+    for (var i = 0; i < listaProdutos.length; i++) {
+        for (j in listaProdutos[i]) {
+            let item = document.createElement('td');
+            item.appendChild(document.createTextNode(listaProdutos[i].produto));
+            tr.appendChild(item);
+
+            item = document.createElement('td');
+            item.appendChild(document.createTextNode("R$" + listaProdutos[i].valor));
+            tr.appendChild(item);
+
+            item = document.createElement('td');
+            item.appendChild(document.createTextNode(listaProdutos[i].cupom + "%"));
+            tr.appendChild(item);
+
+            item = document.createElement('td');
+            item.appendChild(document.createTextNode(listaProdutos[i].quantidade));
+            tr.appendChild(item);
+
+            tr = document.createElement("tr");
+        }
+        tBody.appendChild(tr);
+    }
+
+    document.getElementById("botao").style.display = "none";
+
+    let lista2 = document.getElementById('lista2');
+    let tHead2 = document.getElementById("tHead2");
+    let tBody2 = document.getElementById("tBody2");
+    let th2 = document.createElement("th");
+    let tr2 = document.createElement("tr");
+
+    th2.appendChild(document.createTextNode("Valor Total"))
+
+    tHead2.appendChild(th2)
+
+    th2 = document.createElement("th");
+    th2.appendChild(document.createTextNode("Desconto Total"))
+
+    tHead2.appendChild(th2)
+
+    th2 = document.createElement("th");
+    th2.appendChild(document.createTextNode("Quantidade Total"))
+
+    tHead2.appendChild(th2)
+
+    th2 = document.createElement("th");
+
+
+    let item2 = document.createElement("td")
+    item2.appendChild(document.createTextNode("R$" + total.valorTotal))
+    tr2.appendChild(item2)
+    item2 = document.createElement("td")
+    item2.appendChild(document.createTextNode("R$" + total.valorTotalDesconto))
+    tr2.appendChild(item2)
+    item2 = document.createElement("td")
+    item2.appendChild(document.createTextNode(total.quantidadeDeProdutos))
+    tr2.appendChild(item2)
+    item2 = document.createElement("td")
+    tBody2.appendChild(tr2)
+}
