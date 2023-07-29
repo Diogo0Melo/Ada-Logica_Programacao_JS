@@ -40,14 +40,13 @@ let listaProdutos = []
 let produto = ""
 let valor = 0
 let cupom = 0
-let quantidade = 0
+let quantidade = 1
 for (var i in reciboDeVenda) {
-
+    let sairLoop = false
     if (reciboDeVenda[i] == "/") {
 
         produto = produto[0].toUpperCase() + produto.substring(1);
         infosProduto.produto = produto
-        var tempProduto = produto
         produto = ""
         continue
     }
@@ -60,18 +59,20 @@ for (var i in reciboDeVenda) {
     else if (reciboDeVenda[i] == ";") {
         infosProduto.cupom = cupom
         infosProduto.quantidade = quantidade
-        for (var j in listaProdutos) {
-            console.log("entrou no for")
-            if (listaProdutos[j].produto == tempProduto) {
-                console.log("et1212a")
+        for (var j = 0; j < listaProdutos.length; j++) {
+            if (infosProduto.produto == listaProdutos[j].produto) {
                 listaProdutos[j].quantidade += 1
             }
-            else {
-                listaProdutos.push({ ...infosProduto })
-
+            else{
+                continue
             }
-            console.log("ainda no for")
+            sairLoop = true
             break
+        }
+        if(sairLoop){
+            cupom = 0
+            produto = ""
+            continue
         }
         listaProdutos.push({ ...infosProduto })
         cupom = 0
@@ -99,6 +100,7 @@ for (var i in reciboDeVenda) {
 
 console.log(infosProduto)
 console.log(listaProdutos)
+
 
 // let listaContador = []
 
