@@ -101,28 +101,18 @@ for (var i in reciboDeVenda) {
 console.log(infosProduto)
 console.log(listaProdutos)
 
+let total = {}
+let totalConta = 0
+let quantidadeConta = 0
+let cupomConta = 0
+for (var i in listaProdutos){
+    let subTotalConta = (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
+    quantidadeConta += listaProdutos[i].quantidade
+    cupomConta += listaProdutos[i].cupom
+    totalConta += subTotalConta
+}
+console.log(totalConta, cupomConta, quantidadeConta)
 
-// let listaContador = []
+total.valorTotal = totalConta, total.valorTotalDesconto = cupomConta, total.quantidadeDeProdutos = quantidadeConta
 
-// for (var i in listaProdutos){
-//     listaContador.push(listaProdutos[i].produto)
-// }
-// listaContador.sort()
-// // for (var i in listaContador){
-// //     var contador =  listaContador.indexOf(listaContador[i])
-// //     console.log(contador)
-// //     listaProdutos[i].quantidade = contador
-// //     Number(i)
-// //     i += contador
-// //     contador = 0
-// // }
-// for (var i of listaContador){
-//     var posicaoProduto = listaProdutos.indexOf()
-//     console.log(i)
-//     console.log(posicaoProduto)
-//     listaProdutos = listaProdutos[posicaoProduto].quantidade += 1
-// }
-
-
-// console.log()
-// console.log(listaProdutos)
+console.log(total)
