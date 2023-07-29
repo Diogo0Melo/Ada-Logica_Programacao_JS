@@ -98,7 +98,6 @@ for (var i in reciboDeVenda) {
 
 }
 
-console.log(infosProduto)
 console.log(listaProdutos)
 
 let total = {}
@@ -135,7 +134,7 @@ function gerarRecibo() {
     th.appendChild(document.createTextNode("Quantidade"));
     tHead.appendChild(th);
 
-    for (var i = 0; i < listaProdutos.length; i++) {
+    for (var i = -1; i < listaProdutos.length; i++) {
         for (j in listaProdutos[i]) {
             let item = document.createElement('td');
             item.appendChild(document.createTextNode(listaProdutos[i].produto));
