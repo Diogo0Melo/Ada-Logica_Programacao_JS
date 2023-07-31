@@ -37,45 +37,23 @@ const reciboDeVenda = 'régua/valor3=cupom0;lápis/valor0.5=cupom0;mochila/valor
 
 const infosProduto = {}
 const listaProdutos = []
-let produto = "", valor = "", cupom = "";
-let quantidade = 1
-for (let i in reciboDeVenda) {
-    if (reciboDeVenda[i] == "/") {
-
-        produto = produto[0].toUpperCase() + produto.substring(1);
-        infosProduto.produto = produto
-        produto = ""
+var separators = ['/valor', '=cupom', ';'];
+var result = reciboDeVenda.split(RegExp(separators.join('|'), 'g')).filter(element => element);
+for (let i = 0; i < result.length; i++) {
+    let produto = result[i]
+    produto = produto[0].toUpperCase() + produto.substring(1);
+    infosProduto.produto = produto
+    if (listaProdutos.find(p => p.produto == infosProduto.produto)) {
+        listaProdutos[listaProdutos.findIndex(p => p.produto == infosProduto.produto)].quantidade++;
+        i += 2
         continue
     }
-    else if (reciboDeVenda[i] == "=") {
-        infosProduto.valor = Number(valor)
-        valor = "", produto = "";
-        continue
-    }
-    else if (reciboDeVenda[i] == ";") {
-        infosProduto.cupom = Number(cupom)
-        infosProduto.quantidade = quantidade
-        if (listaProdutos.find(p => p.produto == infosProduto.produto)) {
-            listaProdutos[listaProdutos.findIndex(p => p.produto == infosProduto.produto)].quantidade++
-            cupom = "", produto = "";
-            continue
-        }
-        listaProdutos.push({ ...infosProduto })
-        cupom = "", produto = "";
-        continue
-    }
-    else if (produto == "valor") {
-        valor += reciboDeVenda[i]
-        continue
-    }
-    else if (produto == "cupom") {
-        cupom += reciboDeVenda[i]
-        continue
-    }
-    produto += reciboDeVenda[i]
+    infosProduto.valor = +result[i+=1]
+    infosProduto.cupom = +result[i+=1]
+    infosProduto.quantidade = 1
+    listaProdutos.push({ ...infosProduto })
 
 }
-
 console.log(listaProdutos)
 
 const total = {}
@@ -155,7 +133,6 @@ function gerarRecibo() {
     tHead2.appendChild(th2)
 
     th2 = document.createElement("th");
-
 
     let item2 = document.createElement("td")
     item2.appendChild(document.createTextNode("R$" + total.valorTotal))
