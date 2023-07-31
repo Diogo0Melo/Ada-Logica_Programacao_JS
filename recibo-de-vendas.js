@@ -37,8 +37,8 @@ const reciboDeVenda = 'régua/valor3=cupom0;lápis/valor0.5=cupom0;mochila/valor
 
 const infosProduto = {}
 const listaProdutos = []
-var separators = ['/valor', '=cupom', ';'];
-var result = reciboDeVenda.split(RegExp(separators.join('|'), 'g')).filter(element => element);
+let separators = ['/valor', '=cupom', ';'];
+let result = reciboDeVenda.split(RegExp(separators.join('|'), 'g')).filter(Boolean);
 for (let i = 0; i < result.length; i++) {
     let produto = result[i]
     produto = produto[0].toUpperCase() + produto.substring(1);
