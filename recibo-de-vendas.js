@@ -49,8 +49,7 @@ for (let i in reciboDeVenda) {
     }
     else if (reciboDeVenda[i] == "=") {
         infosProduto.valor = Number(valor)
-        valor = 0
-        produto = ""
+        valor = "", produto = "";
         continue
     }
     else if (reciboDeVenda[i] == ";") {
@@ -58,13 +57,11 @@ for (let i in reciboDeVenda) {
         infosProduto.quantidade = quantidade
         if (listaProdutos.find(p => p.produto == infosProduto.produto)) {
             listaProdutos[listaProdutos.findIndex(p => p.produto == infosProduto.produto)].quantidade++
-            cupom = 0
-            produto = ""
+            cupom = "", produto = "";
             continue
         }
         listaProdutos.push({ ...infosProduto })
-        cupom = 0
-        produto = ""
+        cupom = "", produto = "";
         continue
     }
     else if (produto == "valor") {
@@ -81,7 +78,7 @@ for (let i in reciboDeVenda) {
 
 console.log(listaProdutos)
 
-let total = {}
+const total = {}
 let totalConta = 0, quantidadeConta = 0, cupomConta = 0;
 
 for (let i in listaProdutos) {
