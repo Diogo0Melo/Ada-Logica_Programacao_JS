@@ -35,12 +35,11 @@ const reciboDeVenda = 'régua/valor3=cupom0;lápis/valor0.5=cupom0;mochila/valor
 
 // Boa sorte =D
 
-let infosProduto = {}
-let listaProdutos = []
+const infosProduto = {}
+const listaProdutos = []
 let produto = "", valor = "", cupom = "";
 let quantidade = 1
-for (var i in reciboDeVenda) {
-    let sairLoop = false
+for (let i in reciboDeVenda) {
     if (reciboDeVenda[i] == "/") {
 
         produto = produto[0].toUpperCase() + produto.substring(1);
@@ -57,17 +56,8 @@ for (var i in reciboDeVenda) {
     else if (reciboDeVenda[i] == ";") {
         infosProduto.cupom = Number(cupom)
         infosProduto.quantidade = quantidade
-        for (var j = 0; j < listaProdutos.length; j++) {
-            if (infosProduto.produto == listaProdutos[j].produto) {
-                listaProdutos[j].quantidade++
-            }
-            else {
-                continue
-            }
-            sairLoop = true
-            break
-        }
-        if (sairLoop) {
+        if (listaProdutos.find(p => p.produto == infosProduto.produto)) {
+            listaProdutos[listaProdutos.findIndex(p => p.produto == infosProduto.produto)].quantidade++
             cupom = 0
             produto = ""
             continue
@@ -92,10 +82,9 @@ for (var i in reciboDeVenda) {
 console.log(listaProdutos)
 
 let total = {}
-let totalConta = 0
-let quantidadeConta = 0
-let cupomConta = 0
-for (var i in listaProdutos) {
+let totalConta = 0, quantidadeConta = 0, cupomConta = 0;
+
+for (let i in listaProdutos) {
     totalConta += listaProdutos[i].valor * listaProdutos[i].quantidade
     quantidadeConta += listaProdutos[i].quantidade
     cupomConta += (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
@@ -108,7 +97,6 @@ console.log(total)
 
 
 function gerarRecibo() {
-    let lista = document.getElementById('lista');
     let tHead = document.getElementById("tHead");
     let tBody = document.getElementById("tBody");
     let th = document.createElement("th");
@@ -125,7 +113,7 @@ function gerarRecibo() {
     th.appendChild(document.createTextNode("Quantidade"));
     tHead.appendChild(th);
 
-    for (var i = -1; i < listaProdutos.length; i++) {
+    for (let i = -1; i < listaProdutos.length; i++) {
         for (j in listaProdutos[i]) {
             let item = document.createElement('td');
             item.appendChild(document.createTextNode(listaProdutos[i].produto));
@@ -150,7 +138,6 @@ function gerarRecibo() {
 
     document.getElementById("botao").style.display = "none";
 
-    let lista2 = document.getElementById('lista2');
     let tHead2 = document.getElementById("tHead2");
     let tBody2 = document.getElementById("tBody2");
     let th2 = document.createElement("th");
