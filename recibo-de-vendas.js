@@ -37,9 +37,7 @@ const reciboDeVenda = 'régua/valor3=cupom0;lápis/valor0.5=cupom0;mochila/valor
 
 let infosProduto = {}
 let listaProdutos = []
-let produto = ""
-let valor = 0
-let cupom = 0
+let produto = "", valor = "", cupom = "";
 let quantidade = 1
 for (var i in reciboDeVenda) {
     let sairLoop = false
@@ -51,17 +49,17 @@ for (var i in reciboDeVenda) {
         continue
     }
     else if (reciboDeVenda[i] == "=") {
-        infosProduto.valor = valor
+        infosProduto.valor = Number(valor)
         valor = 0
         produto = ""
         continue
     }
     else if (reciboDeVenda[i] == ";") {
-        infosProduto.cupom = cupom
+        infosProduto.cupom = Number(cupom)
         infosProduto.quantidade = quantidade
         for (var j = 0; j < listaProdutos.length; j++) {
             if (infosProduto.produto == listaProdutos[j].produto) {
-                listaProdutos[j].quantidade += 1
+                listaProdutos[j].quantidade++
             }
             else {
                 continue
@@ -80,18 +78,11 @@ for (var i in reciboDeVenda) {
         continue
     }
     else if (produto == "valor") {
-        if (reciboDeVenda[i] == ".") {
-            i++
-            valor += parseFloat("." + reciboDeVenda[i])
-
-        }
-        else {
-            valor += +reciboDeVenda[i]
-            continue
-        }
+        valor += reciboDeVenda[i]
+        continue
     }
     else if (produto == "cupom") {
-        cupom += +reciboDeVenda[i]
+        cupom += reciboDeVenda[i]
         continue
     }
     produto += reciboDeVenda[i]
@@ -105,15 +96,15 @@ let totalConta = 0
 let quantidadeConta = 0
 let cupomConta = 0
 for (var i in listaProdutos) {
-    let subTotalConta = (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
+    totalConta += listaProdutos[i].valor * listaProdutos[i].quantidade
     quantidadeConta += listaProdutos[i].quantidade
-    cupomConta += listaProdutos[i].cupom
-    totalConta += subTotalConta
+    cupomConta += (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
 }
 
 total.valorTotal = totalConta, total.valorTotalDesconto = cupomConta, total.quantidadeDeProdutos = quantidadeConta
 
 console.log(total)
+
 
 
 function gerarRecibo() {
@@ -170,7 +161,7 @@ function gerarRecibo() {
     tHead2.appendChild(th2)
 
     th2 = document.createElement("th");
-    th2.appendChild(document.createTextNode("Desconto Total"))
+    th2.appendChild(document.createTextNode("Valor Com Desconto"))
 
     tHead2.appendChild(th2)
 
