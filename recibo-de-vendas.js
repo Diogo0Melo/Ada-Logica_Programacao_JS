@@ -37,10 +37,10 @@ const reciboDeVenda = 'régua/valor3=cupom0;lápis/valor0.5=cupom0;mochila/valor
 
 const infosProduto = {}
 const listaProdutos = []
-let separators = ['/valor', '=cupom', ';'];
-let result = reciboDeVenda.split(RegExp(separators.join('|'), 'g')).filter(Boolean);
-for (let i = 0; i < result.length; i++) {
-    let produto = result[i]
+let separadores = ['/valor', '=cupom', ';'];
+let resultado = reciboDeVenda.split(RegExp(separadores.join('|'), 'g')).filter(Boolean);
+for (let i = 0; i < resultado.length; i++) {
+    let produto = resultado[i]
     produto = produto[0].toUpperCase() + produto.substring(1);
     infosProduto.produto = produto
     if (listaProdutos.find(p => p.produto == infosProduto.produto)) {
@@ -48,27 +48,25 @@ for (let i = 0; i < result.length; i++) {
         i += 2
         continue
     }
-    infosProduto.valor = +result[i+=1]
-    infosProduto.cupom = +result[i+=1]
+    infosProduto.valor = +resultado[i+=1]
+    infosProduto.cupom = +resultado[i+=1]
     infosProduto.quantidade = 1
     listaProdutos.push({ ...infosProduto })
-
 }
-console.log(listaProdutos)
 
 const total = {}
 let totalConta = 0, quantidadeConta = 0, cupomConta = 0;
 
-for (let i in listaProdutos) {
-    totalConta += listaProdutos[i].valor * listaProdutos[i].quantidade
-    quantidadeConta += listaProdutos[i].quantidade
-    cupomConta += (listaProdutos[i].valor - (listaProdutos[i].valor * (listaProdutos[i].cupom / 100))) * listaProdutos[i].quantidade
-}
+listaProdutos.map(item => {
+    const {valor, cupom, quantidade} = item
+    totalConta += valor * quantidade, quantidadeConta += quantidade, cupomConta += (valor - (valor * (cupom / 100))) * quantidade;
+});
 
 total.valorTotal = totalConta, total.valorTotalDesconto = cupomConta, total.quantidadeDeProdutos = quantidadeConta
 
-console.log(total)
-
+console.log(listaProdutos, "\n", total)
+console.table(listaProdutos)
+console.table(total)
 
 
 function gerarRecibo() {
