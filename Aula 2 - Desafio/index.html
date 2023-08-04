@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="recibo-de-vendas.js"></script>
+    <style>
+        * {
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: #ffecb3;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 2px solid black;
+            font-size: 20px;
+        }
+
+        th {
+            background-color: gray;
+        }
+
+        input {
+            padding: 32px 64px;
+            font-size: 50px;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        input:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <title></title>
+</head>
+
+<body>
+    <div>
+        <table id="lista">
+            <thead>
+                <tr id="tHead">
+
+                </tr>
+            </thead>
+            <tbody id="tBody">
+
+            </tbody>
+        </table>
+        <table id="lista2">
+            <thead>
+                <tr id="tHead2">
+
+                </tr>
+            </thead>
+            <tbody id="tBody2">
+
+            </tbody>
+        </table>
+        
+    </div>
+    <input id="botao" type="button" onclick="gerarRecibo()" value="Gerar Recibo">
+</body>
+
+</html>
