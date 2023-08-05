@@ -5,7 +5,7 @@ let aluno = {}
 const pegarNome = () => { 
     while (true) {
         const nome = input.question('Informe seu nome: ')
-        if (!nome.length || nome.split('').filter(Boolean).find(n => /\d/.test(n))) { // verifica se nome contém números ou está vazio
+        if (!nome.length || nome.split('').filter(Boolean).find(n => /\d/.test(n))) { // verifica se nome contém números ou a string está vazia
             console.log(`O nome ${nome} e invalido.\nTente novamente.`)
             continue
         }
@@ -16,7 +16,7 @@ const pegarNome = () => {
 const pegarTurma = () => {
     while (true) {
         const turma = input.question('Informe sua turma: ')
-        if (!turma.length) {  // verifica se turma está vazia
+        if (!turma.length) {  // verifica se a string turma está vazia
             console.log(`A turma ${turma} e invalida.\nTente novamente.`)
             continue
         }

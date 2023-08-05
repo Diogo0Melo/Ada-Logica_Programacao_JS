@@ -18,7 +18,7 @@ Abaixo do peso: IMC < 18.5 Peso normal: 18.5 <= IMC < 24.9 Sobrepeso: 25 <= IMC 
 
 const input = require('readline-sync')
 let validador = true
-do{
+while(validador){
     const peso = input.question('Informe seu peso em kg: ').replace(',','.')
     const altura = input.question('Informe sua altura em metros: ').replace(',','.')
     const imc = Number(peso / (altura * altura))
@@ -59,6 +59,6 @@ do{
                 validador = false
         }
     }
-}while(validador)
+}
 
 
