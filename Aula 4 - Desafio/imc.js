@@ -45,7 +45,7 @@ while(validador){
     }
     else {
         console.log('Você não informou caracteres válidos.')
-        console.log('Gostaria de tentar novamente ?\nDigite S (para sim) e N (para nao)')
+        console.log('Gostaria de tentar novamente ?\nDigite S (para sim) e N (para não)')
         const opcao = input.question('').toUpperCase()
         switch (opcao) {
             case 'S':
