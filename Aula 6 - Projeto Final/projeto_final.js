@@ -142,10 +142,28 @@ function pegarNotas() {
     }
 }
 
+function removerAluno(){
+        const idTurma = +prompt("Informe o ID da turma do aluno");
+        const email = prompt("Informe o email do aluno");
+        if (turmas.find(t => t.idTurma == idTurma)) {
+            const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
+            const opcao = +prompt(`Deseja remover o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
+            switch (opcao) {
+                case 1:
+                    return turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
+                case 2:
+                    return
+                default:
+                    console.log("Opção inválida.")
+            }
+        }
+        
+    }
 
 
-const turmasCadastradas = []
-const turmas = []
+
+const turmasCadastradas = [2]
+const turmas = [{idTurma: 2, alunos: [{nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}, {nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}]}]
 let tentativas = false
 
 
