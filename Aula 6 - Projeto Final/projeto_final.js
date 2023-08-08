@@ -23,11 +23,11 @@ function cadastrarAluno() {
         sobrenome: pegarSobrenome(),
         email: pegarEmail(),
         turma: pegarTurma(),
-        nascimento: pegarNascimento(),
+        ano: pegarIdade(),
         notas: pegarNotas(),
         ativo: true,
     };
-    if (turmas.find(t => t.idTurma == aluno.turma)){
+    if (turmas.find(t => t.idTurma == aluno.turma)) {
         return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
     }
     else return turmas.push({ idTurma: aluno.turma, alunos: [aluno] });
@@ -100,19 +100,27 @@ function pegarTurma() {
     }
 
 }
-function pegarNascimento() {
+function pegarIdade() {
     for (let i = 0; i <= 3; i++) {
         if (i === 3 || tentativas) {
             console.log(`Excesso de tentativas, encerrando o programa.`);
             tentativas = true
             return
         }
-        const nascimento = prompt("Informe a data de nascimento do aluno [Exemplo: 01/01/2000]").trim();
-        if (!nascimento.length || nascimento.split("").filter(Boolean).find((n) => /[a-zA-Z]|\s/.test(n))) {
-            alert(`A data de nascimento ${nascimento} é inválida.\nTente novamente.`);
+        const dia = +prompt("Informe o dia do nascimento do aluno");
+        const mes = +prompt('Informe o mês do nascimento do aluno');
+        const ano = +prompt('Informe o ano do nascimento do aluno');
+        if (isNaN(dia) || isNaN(mes) || isNaN(ano) || dia < 1 || mes < 1 || mes > 12 || ano < 1900 || ano > new Date().getFullYear()) {
+            alert(`A data de nascimento ${dia + " " + mes + " " + ano} é inválida.\nTente novamente.`);
             continue;
         }
-        return nascimento;
+        const idade = new Date().getFullYear() - ano
+        if (idade < 16){
+            alert("O aluno precisa ter ao menos 16 anos para ser cadastrado.");
+            continue
+        }
+        const idadeFormatada = (dia + "/" + mes + "/" + ano)
+        return idadeFormatada;
     }
 
 }
@@ -137,28 +145,28 @@ function pegarNotas() {
     }
 }
 
-function removerAluno(){
-        const idTurma = +prompt("Informe o ID da turma do aluno");
-        const email = prompt("Informe o email do aluno");
-        if (turmas.find(t => t.idTurma == idTurma)) {
-            const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
-            const opcao = +prompt(`Deseja remover o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
-            switch (opcao) {
-                case 1:
-                    return turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
-                case 2:
-                    return
-                default:
-                    console.log("Opção inválida.")
-            }
+function removerAluno() {
+    const idTurma = +prompt("Informe o ID da turma do aluno");
+    const email = prompt("Informe o email do aluno");
+    if (turmas.find(t => t.idTurma == idTurma)) {
+        const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
+        const opcao = +prompt(`Deseja remover o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
+        switch (opcao) {
+            case 1:
+                return turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
+            case 2:
+                return
+            default:
+                console.log("Opção inválida.")
         }
-        
     }
+
+}
 
 
 
 const turmasCadastradas = [2]
-const turmas = [{idTurma: 2, alunos: [{nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}, {nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}]}]
+const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, ano: "01/01/2000", notas: [5, 5, 5, 5, 5] }, { nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, ano: "01/01/2000", notas: [5, 5, 5, 5, 5] }] }]
 let tentativas = false
 
 
