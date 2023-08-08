@@ -74,7 +74,7 @@ function pegarEmail() {
             return
         }
         const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]").trim();
-        if (!email.length || email.split("").filter(Boolean).find((n) => /\d\s/.test(n)) || !email.includes("@") || !email.includes(".")) {
+        if (!email.length || email.split("").filter(Boolean).find((n) => /\s/.test(n)) || !email.includes("@") || !email.includes(".") || turmas[turmas.findIndex(t => t.alunos)].alunos.find(a => a.email == email)) {
             alert(`O email ${email} é inválido.\nTente novamente.`);
             continue;
         }
@@ -108,7 +108,7 @@ function pegarNascimento() {
             return
         }
         const nascimento = prompt("Informe a data de nascimento do aluno [Exemplo: 01/01/2000]").trim();
-        if (!nascimento.length || nascimento.split("").filter(Boolean).find((n) => /[a-zA-Z]\s/.test(n))) {
+        if (!nascimento.length || nascimento.split("").filter(Boolean).find((n) => /[a-zA-Z]|\s/.test(n))) {
             alert(`A data de nascimento ${nascimento} é inválida.\nTente novamente.`);
             continue;
         }
@@ -124,12 +124,7 @@ function pegarNotas() {
             return
         }
         const notas = [];
-        const qtdeNotas = +prompt("Informe a quantidade de notas");
-        if (!qtdeNotas || isNaN(qtdeNotas) || qtdeNotas < 0 || qtdeNotas > 5) {
-            console.log(`A quantidade de notas ${qtdeNotas} é inválida.\nTente novamente.`);
-            continue;
-        }
-        for (let i = 0; i < qtdeNotas; i++) {
+        for (let i = 0; i < 5; i++) {
             const nota = +prompt(`Informe a ${i + 1}º nota do aluno`);
             if (isNaN(nota) || nota < 0 || nota > 6) {
                 alert(`A nota informada é inválida.\nTente novamente.`);
@@ -163,7 +158,7 @@ function removerAluno(){
 
 
 const turmasCadastradas = [2]
-const turmas = [{idTurma: 2, alunos: [{nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}, {nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}]}]
+const turmas = [{idTurma: 2, alunos: [{nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}, {nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5]}]}]
 let tentativas = false
 
 
