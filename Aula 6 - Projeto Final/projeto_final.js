@@ -1,12 +1,19 @@
 function cadastrarTurma() {
-    while (true) {
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
         const idTurma = +prompt("Informe o ID da turma");
-        if (idTurma < 1 || idTurma > 10 || turmas.find((t) => t == idTurma)) {
+
+        if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma)) {
             alert(`A turma ${idTurma} é inválida.\nTente novamente.`);
             continue;
         }
+
         alert(`Turma ${idTurma} cadastrada com sucesso.`);
-        return turmas.push(idTurma);
+        return turmasCadastradas.push(idTurma);
     }
 }
 
@@ -20,81 +27,126 @@ function cadastrarAluno() {
         notas: pegarNotas(),
         ativo: true,
     };
-    return aluno;
+    if (turmas.find(t => t.idTurma == aluno.turma)){
+        return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
+    }
+    else return turmas.push({ idTurma: aluno.turma, alunos: [aluno] });
 }
 
 function pegarNome() {
-    const nome = prompt("Informe o nome do aluno").trim();
-    if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s/.test(n))) {
-        alert(`O nome ${nome} é inválido.\nTente novamente.`);
-        pegarNome();
-    }
-    return nome;
 
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
+        const nome = prompt("Informe o nome do aluno").trim();
+        if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s/.test(n))) {
+            alert(`O nome ${nome} é inválido.\nTente novamente.`);
+            continue
+        }
+
+        return nome;
+    }
 }
 function pegarSobrenome() {
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
+        const sobrenome = prompt("Informe o sobrenome do aluno").trim();
+        if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d/.test(n))) {
+            alert(`O nome ${sobrenome} é inválido.\nTente novamente.`);
+            continue;
+        }
 
-    const sobrenome = prompt("Informe o sobrenome do aluno").trim();
-    if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d/.test(n))) {
-        alert(`O nome ${sobrenome} é inválido.\nTente novamente.`);
-        pegarSobrenome();
+        return sobrenome;
     }
-    return sobrenome;
-
 }
 function pegarEmail() {
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
+        const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]").trim();
+        if (!email.length || email.split("").filter(Boolean).find((n) => /\d\s/.test(n)) || !email.includes("@") || !email.includes(".")) {
+            alert(`O email ${email} é inválido.\nTente novamente.`);
+            continue;
+        }
 
-    const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]").trim();
-    if (!email.length || email.split("").filter(Boolean).find((n) => /\d\s/.test(n)) || !email.includes("@") || !email.includes(".")) {
-        alert(`O email ${email} é inválido.\nTente novamente.`);
-        pegarEmail();
+        return email;
     }
-    return email;
 
 }
 function pegarTurma() {
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
+        const turma = +prompt("Informe a turma do aluno");
+        if (isNaN(turma) || turma < 1 || turma > 10 || !turmasCadastradas.find(t => t === turma)) {
+            alert(`A turma ${turma} é inválida.\nTente novamente.`);
+            continue
+        }
 
-    const turma = +prompt("Informe a turma do aluno");
-    if (isNaN(turma) || turma < 1 || turma > 10 || !turmas.find(t => t === turma)) {
-        alert(`A turma ${turma} é inválida.\nTente novamente.`);
-        pegarTurma();
+        return turma
     }
-    return turma
 
 }
 function pegarNascimento() {
-
-    const nascimento = prompt("Informe a data de nascimento do aluno [Exemplo: 01/01/2000]").trim();
-    if (!nascimento.length || nascimento.split("").filter(Boolean).find((n) => /[a-zA-Z]\s/.test(n))) {
-        alert(`A data de nascimento ${nascimento} é inválida.\nTente novamente.`);
-        pegarNascimento();
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = true
+            return
+        }
+        const nascimento = prompt("Informe a data de nascimento do aluno [Exemplo: 01/01/2000]").trim();
+        if (!nascimento.length || nascimento.split("").filter(Boolean).find((n) => /[a-zA-Z]\s/.test(n))) {
+            alert(`A data de nascimento ${nascimento} é inválida.\nTente novamente.`);
+            continue;
+        }
+        return nascimento;
     }
-    return nascimento;
 
 }
 function pegarNotas() {
-
-    const notas = [];
-    const qtdeNotas = +prompt("Informe a quantidade de notas");
-    if (!qtdeNotas || isNaN(qtdeNotas) || qtdeNotas < 0 || qtdeNotas > 5) {
-        console.log(`A quantidade de notas ${qtdeNotas} é inválida.\nTente novamente.`);
-        pegarNotas();
-    }
-    for (let i = 0; i < qtdeNotas; i++) {
-        const nota = +prompt(`Informe a ${i + 1}º nota do aluno`);
-        if (isNaN(nota) || nota < 0 || nota > 10) {
-            alert(`A nota informada é inválida.\nTente novamente.`);
-            i--;
+    for (let i = 0; i <= 3; i++) {
+        if (i === 3 || tentativas) {
+            console.log(`Excesso de tentativas, encerrando o programa.`);
+            tentativas = false
+            return
+        }
+        const notas = [];
+        const qtdeNotas = +prompt("Informe a quantidade de notas");
+        if (!qtdeNotas || isNaN(qtdeNotas) || qtdeNotas < 0 || qtdeNotas > 5) {
+            console.log(`A quantidade de notas ${qtdeNotas} é inválida.\nTente novamente.`);
             continue;
         }
-        notas.push(nota);
+        for (let i = 0; i < qtdeNotas; i++) {
+            const nota = +prompt(`Informe a ${i + 1}º nota do aluno`);
+            if (isNaN(nota) || nota < 0 || nota > 6) {
+                alert(`A nota informada é inválida.\nTente novamente.`);
+                i--;
+                continue;
+            }
+            notas.push(nota);
+        }
+        return notas;
     }
-    return notas;
 }
 
 
+
+const turmasCadastradas = []
 const turmas = []
+let tentativas = false
 
 
-console.log(aluno);
-console.log('Digite "cadastrarTurma()" para cadastrar uma nova turma.');
+
