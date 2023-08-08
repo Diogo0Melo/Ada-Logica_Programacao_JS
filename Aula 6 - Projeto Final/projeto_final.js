@@ -23,7 +23,7 @@ function cadastrarAluno() {
         sobrenome: pegarSobrenome(),
         email: pegarEmail(),
         turma: pegarTurma(),
-        ano: pegarIdade(),
+        nascimento: pegarIdade(),
         notas: pegarNotas(),
         ativo: true,
     };
@@ -46,8 +46,8 @@ function pegarNome() {
             alert(`O nome ${nome} é inválido.\nTente novamente.`);
             continue
         }
-
-        return nome;
+        const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1)
+        return nomeFormatado;
     }
 }
 function pegarSobrenome() {
@@ -110,12 +110,12 @@ function pegarIdade() {
         const dia = +prompt("Informe o dia do nascimento do aluno");
         const mes = +prompt('Informe o mês do nascimento do aluno');
         const ano = +prompt('Informe o ano do nascimento do aluno');
-        if (isNaN(dia) || isNaN(mes) || isNaN(ano) || dia < 1 || mes < 1 || mes > 12 || ano < 1900 || ano > new Date().getFullYear()) {
+        if (isNaN(dia) || isNaN(mes) || isNaN(ano) || dia < 1 || dia > 31 || mes < 1 || mes > 12 || ano < 1900 || ano > new Date().getFullYear()) {
             alert(`A data de nascimento ${dia + " " + mes + " " + ano} é inválida.\nTente novamente.`);
             continue;
         }
         const idade = new Date().getFullYear() - ano
-        if (idade < 16){
+        if (idade < 16) {
             alert("O aluno precisa ter ao menos 16 anos para ser cadastrado.");
             continue
         }
@@ -160,14 +160,55 @@ function removerAluno() {
                 console.log("Opção inválida.")
         }
     }
+    else alert(`Turma ${idTurma} ou email do aluno ${email} inexistente.`)
+}
+function atualizarCadastroAluno() {
+    const idTurma = +prompt("Informe o ID da turma do aluno");
+    const email = prompt("Informe o email do aluno");
+    if (turmas.find(t => t.idTurma == idTurma)) {
+        const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
+        console.log(`Informações do aluno:\nNome Completo: ${aluno.nome + " " + aluno.sobrenome}\nEmail: ${aluno.email}\nTurma: ${aluno.turma}\nData de nascimento: ${aluno.nascimento}\nNotas: ${aluno.notas}`);
+        const opcao = +prompt(`Deseja atualizar o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
+        switch (opcao) {
+            case 1:
+                const opcao = +prompt(`Qual informação do aluno deseja atualizar? 1 - Nome 2 - Sobrenome 3 - Email 4 - Turma 5 - Data de nascimento 6 - Notas 7 - Ativo 8 - Sair`);
+                switch (opcao) {
+                    case 1:
+                        const nome = pegarNome();
+                        return aluno.nome = nome;
+                    case 2:
+                        const sobrenome = pegarSobrenome();
+                        return aluno.sobrenome = sobrenome;
+                    case 3:
+                        const email = pegarEmail();
+                        return aluno.email = email;
+                    case 4:
+                        const turma = pegarTurma();
+                        return aluno.turma = turma;
+                    case 5:
+                        const nascimento = pegarIdade();
+                        return aluno.nascimento = nascimento;
+                    case 6:
+                        const notas = pegarNotas();
+                        return aluno.notas = notas;
+                    case 7:
+                        const ativo = +prompt("O aluno está ativo? 1 - Sim 0 - Não");
+                        return aluno.ativo = !!ativo;
+                    default:
+                        alert("Opção inválida.")
 
+                }
+            case 2:
+                console.log("Programa encerrado.")
+                return
+            default:
+                alert("Opção inválida.")
+        }
+    } else alert(`Turma ${idTurma} ou email do aluno ${email} inexistente.`)
 }
 
 
 
 const turmasCadastradas = [2]
-const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, ano: "01/01/2000", notas: [5, 5, 5, 5, 5] }, { nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, ano: "01/01/2000", notas: [5, 5, 5, 5, 5] }] }]
+const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5] }, { nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5] }] }]
 let tentativas = false
-
-
-

@@ -1,12 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="projeto_final.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 16px;
+            background-color: gray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            background-color: antiquewhite;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .opcao {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: chartreuse;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: chartreuse;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+        div .opcao:hover, button:hover {
+            background-color: dodgerblue;
+        }
+    </style>
     <title></title>
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="opcao">
+            <button onclick="cadastrarTurma()">Cadastrar Turma</button>
+        </div>
+        <div class="opcao">
+            <button onclick="cadastrarAluno()">Cadastrar Aluno</button>
+        </div>
+        <div class="opcao">
+            <button onclick="removerAluno()">Remover Aluno</button>
+        </div>
+        <div class="opcao">
+            <button onclick="atualizarCadastroAluno()">Atualizar Cadastro do Aluno</button>
+        </div>
+    </div>
 </body>
+
 </html>
