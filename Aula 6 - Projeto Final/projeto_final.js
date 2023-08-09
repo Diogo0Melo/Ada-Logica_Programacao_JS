@@ -5,8 +5,9 @@ function cadastrarTurma() {
         if (i === 3 || tentativas) return console.log(`Excesso de tentativas, encerrando o programa.`);
 
         const idTurma = +prompt("Informe o ID da turma");
+        if (idTurma === 0) return;
 
-        if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma)) {
+        else if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma)) {
             alert(`A turma ${idTurma} é inválida.\nTente novamente.`);
             continue;
         }
@@ -118,7 +119,7 @@ function pegarNotas() {
         const notas = [];
         for (let i = 0; i < 5; i++) {
             const nota = +prompt(`Informe a ${i + 1}º nota do aluno`);
-            if (isNaN(nota) || nota < 0 || nota > 6) {
+            if (isNaN(nota) || nota < 0 || nota > 10) {
                 alert(`A nota informada é inválida.\nTente novamente.`);
                 i--;
                 continue;
@@ -156,7 +157,7 @@ function atualizarCadastroAluno() {
         const opcao = +prompt(`Deseja atualizar o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
         switch (opcao) {
             case 1:
-                const opcao = +prompt(`Qual informação do aluno deseja atualizar? 1 - Nome 2 - Sobrenome 3 - Email 4 - Turma 5 - Data de nascimento 6 - Notas 7 - Ativo 8 - Sair`);
+                const opcao = +prompt(`Qual informação do aluno deseja atualizar?\n1 - Nome 2 - Sobrenome 3 - Email 4 - Turma 5 - Data de nascimento\n6 - Notas 7 - Ativo 8 - Sair`);
                 switch (opcao) {
                     case 1:
                         const nome = pegarNome();
@@ -183,6 +184,9 @@ function atualizarCadastroAluno() {
                             return
                         }
                         return aluno.ativo = !!ativo;
+                    case 8:
+                    case 0:
+                        return
                     default:
                         alert("Opção inválida. Encerrando o programa.");
                         return
@@ -210,7 +214,7 @@ function buscarAluno() {
 
 function mostrarAlunos() {
     turmas.sort((a, b) => a.idTurma - b.idTurma)
-    const opcao = +prompt("Quais alunos deseja ver? 1 - Todos 2 - Ativos 3 - Inativos");
+    const opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - abaixo da média");
     switch (opcao) {
         case 1:
             for (let i = 0; i < turmas.length; i++) {
@@ -248,11 +252,11 @@ function mostrarAlunos() {
             break
         case 3:
             for (let i = 0; i < turmas.length; i++) {
+                let j = 0
                 turmas[i].alunos.map(aluno => {
                     if (!aluno.ativo) {
                         console.log(`Turma ${turmas[i].idTurma}:`)
-                        let j = 0
-                        console.log(`Aluno ${j + 1}:`)
+                        console.log(`Aluno ${j += 1}:`)
                         console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
                         console.log(`Email: ${aluno.email}`)
                         console.log(`Turma: ${aluno.turma}`)
@@ -265,6 +269,44 @@ function mostrarAlunos() {
                 })
             }
             break
+        case 4:
+            for (let i = 0; i < turmas.length; i++) {
+                let j = 0
+                turmas[i].alunos.map(aluno => {
+                    if (aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5 > 6) {
+
+                        console.log(`Turma ${turmas[i].idTurma}:`)
+                        console.log(`Aluno ${j += 1}:`)
+                        console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                        console.log(`Email: ${aluno.email}`)
+                        console.log(`Turma: ${aluno.turma}`)
+                        console.log(`Data de nascimento: ${aluno.nascimento}`)
+                        console.log(`Notas: ${aluno.notas}`)
+                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5}`)
+                        console.log(`Ativo: ${aluno.ativo}`)
+                        console.log('\n')
+                    }
+                })
+            }
+            break
+        case 5:
+            for(let i = 0; i < turmas.length; i++){
+                let j = 0
+                turmas[i].alunos.map(aluno => {
+                    if (aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5 < 6) {
+                        console.log(`Turma ${turmas[i].idTurma}:`)
+                        console.log(`Aluno ${j += 1}:`)
+                        console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                        console.log(`Email: ${aluno.email}`)
+                        console.log(`Turma: ${aluno.turma}`)
+                        console.log(`Data de nascimento: ${aluno.nascimento}`)
+                        console.log(`Notas: ${aluno.notas}`)
+                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5}`)
+                        console.log(`Ativo: ${aluno.ativo}`)
+                        console.log('\n')
+                    }
+                })
+            }
         default:
             console.log("Opção inválida. Encerrando o programa.");
             return
@@ -272,5 +314,5 @@ function mostrarAlunos() {
 }
 
 const turmasCadastradas = [2]
-const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "de Almeida", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "dos Santos", email: "ede@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }, { nome: "Eder", sobrenome: "dos Santos", email: "edersantos@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }] }]
+const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "de Almeida", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "dos Santos", email: "ede@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 10, 10, 5], ativo: false }, { nome: "Eder", sobrenome: "dos Santos", email: "edersantos@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }] }]
 let tentativas = false
