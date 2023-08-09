@@ -1,6 +1,4 @@
 function cadastrarTurma() {
-    console.log("As seguintes turmas ja possuem cadastro: ")
-    console.log(turmasCadastradas.forEach(t => console.log("Turma " + t)));
     for (let i = 0; i <= 3; i++) {
         if (i === 3 || tentativas) return console.log(`Excesso de tentativas, encerrando o programa.`);
 
@@ -214,7 +212,7 @@ function buscarAluno() {
 
 function mostrarAlunos() {
     turmas.sort((a, b) => a.idTurma - b.idTurma)
-    const opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - abaixo da média");
+    const opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - abaixo da média 6 - Quantidade de alunos");
     switch (opcao) {
         case 1:
             for (let i = 0; i < turmas.length; i++) {
@@ -290,7 +288,7 @@ function mostrarAlunos() {
             }
             break
         case 5:
-            for(let i = 0; i < turmas.length; i++){
+            for (let i = 0; i < turmas.length; i++) {
                 let j = 0
                 turmas[i].alunos.map(aluno => {
                     if (aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5 < 6) {
@@ -307,10 +305,45 @@ function mostrarAlunos() {
                     }
                 })
             }
+            break
+        case 6:
+            let qtdeAlunos = 0
+            for (let i = 0; i < turmas.length; i++) {
+                qtdeAlunos += turmas[i].alunos.length
+            }
+            console.log(`Quantidade de alunos cadastrados: ${qtdeAlunos}`)
+            return
         default:
             console.log("Opção inválida. Encerrando o programa.");
             return
     }
+}
+
+function mostrarTurmas() {
+    alert(`Turmas cadastradas: Turma ${turmasCadastradas.sort((a, b) => a - b).map(t => t).filter(Boolean).join(", ")}`);
+    const opcao = +prompt("Deseja ver os alunos de alguma turma especifica ?\n1 - Sim 2 - Não");
+    if (opcao == 1) {
+        const idTurma = +prompt("Informe o ID da turma");
+        const turma = turmas.findIndex(t => t.idTurma == idTurma)
+        alert(`A turma possui ${turmas[turma].alunos.length} alunos.`)
+        const opcao = +prompt("Deseja ver os dados dos alunos da turma ?\n1 - Sim 2 - Não");
+        if (opcao == 1) {
+            let j = 0
+            console.log(`Turma ${turmas[turma].idTurma}:`)
+            turmas[turma].alunos.map(aluno => {
+                console.log(`Aluno ${j += 1}:`)
+                console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                console.log(`Email: ${aluno.email}`)
+                console.log(`Turma: ${aluno.turma}`)
+                console.log(`Data de nascimento: ${aluno.nascimento}`)
+                console.log(`Notas: ${aluno.notas}`)
+                console.log(`Ativo: ${aluno.ativo}`)
+                console.log('\n')
+            })
+        }
+        return
+    }
+    return
 }
 
 const turmasCadastradas = [2]
