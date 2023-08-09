@@ -157,7 +157,8 @@ function removerAluno() {
             case 2:
                 return
             default:
-                console.log("Opção inválida.")
+                console.log("Opção inválida. Encerrando o programa.");
+                return
         }
     }
     else alert(`Turma ${idTurma} ou email do aluno ${email} inexistente.`)
@@ -193,9 +194,14 @@ function atualizarCadastroAluno() {
                         return aluno.notas = notas;
                     case 7:
                         const ativo = +prompt("O aluno está ativo? 1 - Sim 0 - Não");
+                        if(isNaN(ativo) || ativo !== 1 && ativo !== 0) {
+                            alert("Opção inválida. Encerrando o programa.");
+                            return
+                        }
                         return aluno.ativo = !!ativo;
                     default:
-                        alert("Opção inválida.")
+                        alert("Opção inválida. Encerrando o programa.");
+                        return
 
                 }
             case 2:
