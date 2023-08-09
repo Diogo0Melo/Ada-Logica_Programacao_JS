@@ -34,24 +34,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: chartreuse;
-            padding: 10px;
             border-radius: 5px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
         button {
             background-color: chartreuse;
             color: black;
-            padding: 10px 20px;
+            width: 100%;
+            padding: 20px 30px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 24px;
-            font-weight: 700;
+            font-weight: 800;
             transition: background-color 0.3s ease;
         }
         div .opcao:hover, button:hover {
-            background-color: dodgerblue;
+            background-color: darkblue;
+            color: chartreuse;
+        }
+        .opcao span {
+            color: white;
         }
     </style>
     <title></title>
@@ -60,16 +63,22 @@
 <body>
     <div class="container">
         <div class="opcao">
-            <button onclick="cadastrarTurma()">Cadastrar Turma</button>
+            <button onclick="cadastrarTurma()">cadastrarTurma<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="cadastrarAluno()">Cadastrar Aluno</button>
+            <button onclick="cadastrarAluno()">cadastrarAluno<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="removerAluno()">Remover Aluno</button>
+            <button onclick="removerAluno()">removerAluno<span>()</span> </button>
         </div>
         <div class="opcao">
-            <button onclick="atualizarCadastroAluno()">Atualizar Cadastro do Aluno</button>
+            <button onclick="atualizarCadastroAluno()">atualizarCadastroAluno<span>()</span></button>
+        </div>
+        <div class="opcao">
+            <button onclick="buscarAluno()">buscarAluno<span>()</span></button>
+        </div>
+        <div class="opcao">
+            <button onclick="mostrarAlunos()">mostrarAlunos<span>()</span></button>
         </div>
     </div>
 </body>

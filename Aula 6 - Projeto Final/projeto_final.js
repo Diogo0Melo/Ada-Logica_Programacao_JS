@@ -1,10 +1,9 @@
 function cadastrarTurma() {
+    console.log("As seguintes turmas ja possuem cadastro: ")
+    console.log(turmasCadastradas.forEach(t => console.log("Turma " + t)));
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
+        if (i === 3 || tentativas) return console.log(`Excesso de tentativas, encerrando o programa.`);
+
         const idTurma = +prompt("Informe o ID da turma");
 
         if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma)) {
@@ -27,52 +26,46 @@ function cadastrarAluno() {
         notas: pegarNotas(),
         ativo: true,
     };
-    if (turmas.find(t => t.idTurma == aluno.turma)) {
-        return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
+    if (tentativas) {
+        tentativas = false
+        console.log(`Excesso de tentativas, encerrando o programa.`);
+        return alert("Algo inesperado aconteceu.\nO aluno não foi cadastrado.");
     }
+    else if (turmas.find(t => t.idTurma == aluno.turma)) return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
+
     else return turmas.push({ idTurma: aluno.turma, alunos: [aluno] });
 }
 
 function pegarNome() {
 
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
+        if (i === 3 || tentativas) return tentativas = true
+
         const nome = prompt("Informe o nome do aluno").trim();
         if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s/.test(n))) {
             alert(`O nome ${nome} é inválido.\nTente novamente.`);
             continue
         }
-        const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1)
+        const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase()
         return nomeFormatado;
     }
 }
 function pegarSobrenome() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
-        const sobrenome = prompt("Informe o sobrenome do aluno").trim();
+        if (i === 3 || tentativas) return tentativas = true
+
+        const sobrenome = prompt("Informe o sobrenome do aluno").toLowerCase().trim();
         if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d/.test(n))) {
             alert(`O nome ${sobrenome} é inválido.\nTente novamente.`);
             continue;
         }
-
         return sobrenome;
     }
 }
 function pegarEmail() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
+        if (i === 3 || tentativas) return tentativas = true
+
         const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]").trim();
         if (!email.length || email.split("").filter(Boolean).find((n) => /\s/.test(n)) || !email.includes("@") || !email.includes(".") || turmas[turmas.findIndex(t => t.alunos)].alunos.find(a => a.email == email)) {
             alert(`O email ${email} é inválido.\nTente novamente.`);
@@ -85,11 +78,8 @@ function pegarEmail() {
 }
 function pegarTurma() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
+        if (i === 3 || tentativas) return tentativas = true
+
         const turma = +prompt("Informe a turma do aluno");
         if (isNaN(turma) || turma < 1 || turma > 10 || !turmasCadastradas.find(t => t === turma)) {
             alert(`A turma ${turma} é inválida.\nTente novamente.`);
@@ -102,11 +92,8 @@ function pegarTurma() {
 }
 function pegarIdade() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = true
-            return
-        }
+        if (i === 3 || tentativas) return tentativas = true
+
         const dia = +prompt("Informe o dia do nascimento do aluno");
         const mes = +prompt('Informe o mês do nascimento do aluno');
         const ano = +prompt('Informe o ano do nascimento do aluno');
@@ -126,11 +113,8 @@ function pegarIdade() {
 }
 function pegarNotas() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) {
-            console.log(`Excesso de tentativas, encerrando o programa.`);
-            tentativas = false
-            return
-        }
+        if (i === 3 || tentativas) return tentativas = true
+
         const notas = [];
         for (let i = 0; i < 5; i++) {
             const nota = +prompt(`Informe a ${i + 1}º nota do aluno`);
@@ -194,7 +178,7 @@ function atualizarCadastroAluno() {
                         return aluno.notas = notas;
                     case 7:
                         const ativo = +prompt("O aluno está ativo? 1 - Sim 0 - Não");
-                        if(isNaN(ativo) || ativo !== 1 && ativo !== 0) {
+                        if (isNaN(ativo) || ativo !== 1 && ativo !== 0) {
                             alert("Opção inválida. Encerrando o programa.");
                             return
                         }
@@ -213,8 +197,80 @@ function atualizarCadastroAluno() {
     } else alert(`Turma ${idTurma} ou email do aluno ${email} inexistente.`)
 }
 
+function buscarAluno() {
+    const idTurma = +prompt("Informe o ID da turma do aluno");
+    const email = prompt("Informe o email do aluno");
+    const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
+    if (aluno) {
+        console.log('Aluno encontrado.')
+        console.log(`Informações do aluno:\nNome Completo: ${aluno.nome + " " + aluno.sobrenome}\nEmail: ${aluno.email}\nTurma: ${aluno.turma}\nData de nascimento: ${aluno.nascimento}\nNotas: ${aluno.notas}`);
+    }
+    else return alert(`Aluno não encontrado. Verifique o email informado ${email} e tente novamente.`)
+}
 
+function mostrarAlunos() {
+    turmas.sort((a, b) => a.idTurma - b.idTurma)
+    const opcao = +prompt("Quais alunos deseja ver? 1 - Todos 2 - Ativos 3 - Inativos");
+    switch (opcao) {
+        case 1:
+            for (let i = 0; i < turmas.length; i++) {
+                console.log(`Turma ${turmas[i].idTurma}:`)
+                for (let j = 0; j < turmas[i].alunos.length; j++) {
+                    console.log(`Aluno ${j + 1}:`)
+                    console.log(`Nome Completo: ${turmas[i].alunos[j].nome} ${turmas[i].alunos[j].sobrenome} `)
+                    console.log(`Email: ${turmas[i].alunos[j].email}`)
+                    console.log(`Turma: ${turmas[i].alunos[j].turma}`)
+                    console.log(`Data de nascimento: ${turmas[i].alunos[j].nascimento}`)
+                    console.log(`Notas: ${turmas[i].alunos[j].notas}`)
+                    console.log(`Ativo: ${turmas[i].alunos[j].ativo}`)
+                    console.log('\n')
+                }
+            }
+            break
+        case 2:
+            for (let i = 0; i < turmas.length; i++) {
+                turmas[i].alunos.map(aluno => {
+                    if (aluno.ativo) {
+                        console.log(`Turma ${turmas[i].idTurma}:`)
+                        let j = 0
+                        console.log(`Aluno ${j + 1}:`)
+                        console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                        console.log(`Email: ${aluno.email}`)
+                        console.log(`Turma: ${aluno.turma}`)
+                        console.log(`Data de nascimento: ${aluno.nascimento}`)
+                        console.log(`Notas: ${aluno.notas}`)
+                        console.log(`Ativo: ${aluno.ativo}`)
+                        console.log('\n')
+
+                    }
+                })
+            }
+            break
+        case 3:
+            for (let i = 0; i < turmas.length; i++) {
+                turmas[i].alunos.map(aluno => {
+                    if (!aluno.ativo) {
+                        console.log(`Turma ${turmas[i].idTurma}:`)
+                        let j = 0
+                        console.log(`Aluno ${j + 1}:`)
+                        console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                        console.log(`Email: ${aluno.email}`)
+                        console.log(`Turma: ${aluno.turma}`)
+                        console.log(`Data de nascimento: ${aluno.nascimento}`)
+                        console.log(`Notas: ${aluno.notas}`)
+                        console.log(`Ativo: ${aluno.ativo}`)
+                        console.log('\n')
+
+                    }
+                })
+            }
+            break
+        default:
+            console.log("Opção inválida. Encerrando o programa.");
+            return
+    }
+}
 
 const turmasCadastradas = [2]
-const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5] }, { nome: "Eder", sobrenome: "dos Santos", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5] }] }]
+const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "de Almeida", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "dos Santos", email: "ede@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }, { nome: "Eder", sobrenome: "dos Santos", email: "edersantos@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }] }]
 let tentativas = false
