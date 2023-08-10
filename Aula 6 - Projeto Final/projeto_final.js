@@ -3,15 +3,16 @@ function cadastrarTurma() {
         if (i === 3 || tentativas) return console.log(`Excesso de tentativas, encerrando o programa.`);
 
         const idTurma = +prompt("Informe o ID da turma");
+        const maximoDeAlunos = +prompt("Informe o número máximo de alunos da turma [Entre 5 e 10]");
         if (idTurma === 0) return;
 
-        else if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma)) {
+        else if (isNaN(idTurma) || idTurma < 1 || idTurma > 10 || turmasCadastradas.find(t => t == idTurma || isNaN(maximoDeAlunos) || maximoDeAlunos < 5 || maximoDeAlunos > 10)) {
             alert(`A turma ${idTurma} é inválida.\nTente novamente.`);
             continue;
         }
 
         alert(`Turma ${idTurma} cadastrada com sucesso.`);
-        return turmasCadastradas.push(idTurma);
+        return turmasCadastradas.push({idTurma: idTurma, maximoDeAlunos: maximoDeAlunos});
     }
 }
 
@@ -40,7 +41,8 @@ function pegarNome() {
     for (let i = 0; i <= 3; i++) {
         if (i === 3 || tentativas) return tentativas = true
 
-        const nome = prompt("Informe o nome do aluno").trim();
+        const nome = prompt("Informe o nome do aluno").trim().replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, "");
+        console.log(nome)
         if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s/.test(n))) {
             alert(`O nome ${nome} é inválido.\nTente novamente.`);
             continue
@@ -53,7 +55,7 @@ function pegarSobrenome() {
     for (let i = 0; i <= 3; i++) {
         if (i === 3 || tentativas) return tentativas = true
 
-        const sobrenome = prompt("Informe o sobrenome do aluno").toLowerCase().trim();
+        const sobrenome = prompt("Informe o sobrenome do aluno").toLowerCase().trim().replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, "");;
         if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d/.test(n))) {
             alert(`O nome ${sobrenome} é inválido.\nTente novamente.`);
             continue;
@@ -80,7 +82,7 @@ function pegarTurma() {
         if (i === 3 || tentativas) return tentativas = true
 
         const turma = +prompt("Informe a turma do aluno");
-        if (isNaN(turma) || turma < 1 || turma > 10 || !turmasCadastradas.find(t => t === turma)) {
+        if (isNaN(turma) || turma < 1 || turma > 10 || !turmasCadastradas.find(t => t.idTurma === turma) || turmasCadastradas.find(t => t.maximoDeAlunos == turmas[turmas.findIndex(t => t.idTurma == turma)].alunos.length)) {
             alert(`A turma ${turma} é inválida.\nTente novamente.`);
             continue
         }
@@ -168,7 +170,16 @@ function atualizarCadastroAluno() {
                         return aluno.email = email;
                     case 4:
                         const turma = pegarTurma();
-                        return aluno.turma = turma;
+                        aluno.turma = turma;
+
+                        if (turmas.find(t => t.idTurma == aluno.turma)) {
+                            turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
+                            return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
+                        }
+                        else {
+                            turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
+                            return turmas.push({ idTurma: aluno.turma, alunos: [aluno] });
+                        }
                     case 5:
                         const nascimento = pegarIdade();
                         return aluno.nascimento = nascimento;
@@ -210,10 +221,11 @@ function buscarAluno() {
     else return alert(`Aluno não encontrado. Verifique o email informado ${email} e tente novamente.`)
 }
 
-function mostrarAlunos() {
+function mostrarAlunos(opcao1 = 0) {
     turmas.sort((a, b) => a.idTurma - b.idTurma)
     const opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - abaixo da média 6 - Quantidade de alunos");
-    switch (opcao) {
+
+    switch (opcao || opcao1) {
         case 1:
             for (let i = 0; i < turmas.length; i++) {
                 console.log(`Turma ${turmas[i].idTurma}:`)
@@ -271,7 +283,7 @@ function mostrarAlunos() {
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
                 turmas[i].alunos.map(aluno => {
-                    if (aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5 > 6) {
+                    if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 > 6) {
 
                         console.log(`Turma ${turmas[i].idTurma}:`)
                         console.log(`Aluno ${j += 1}:`)
@@ -280,7 +292,7 @@ function mostrarAlunos() {
                         console.log(`Turma: ${aluno.turma}`)
                         console.log(`Data de nascimento: ${aluno.nascimento}`)
                         console.log(`Notas: ${aluno.notas}`)
-                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5}`)
+                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5}`)
                         console.log(`Ativo: ${aluno.ativo}`)
                         console.log('\n')
                     }
@@ -291,7 +303,7 @@ function mostrarAlunos() {
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
                 turmas[i].alunos.map(aluno => {
-                    if (aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5 < 6) {
+                    if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 < 6) {
                         console.log(`Turma ${turmas[i].idTurma}:`)
                         console.log(`Aluno ${j += 1}:`)
                         console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
@@ -299,7 +311,7 @@ function mostrarAlunos() {
                         console.log(`Turma: ${aluno.turma}`)
                         console.log(`Data de nascimento: ${aluno.nascimento}`)
                         console.log(`Notas: ${aluno.notas}`)
-                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, cur) => acc + cur, 0) / 5}`)
+                        console.log(`Média do aluno: ${aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5}`)
                         console.log(`Ativo: ${aluno.ativo}`)
                         console.log('\n')
                     }
@@ -320,7 +332,7 @@ function mostrarAlunos() {
 }
 
 function mostrarTurmas() {
-    alert(`Turmas cadastradas: Turma ${turmasCadastradas.sort((a, b) => a - b).map(t => t).filter(Boolean).join(", ")}`);
+    alert(`Turmas cadastradas: Turma ${turmasCadastradas.sort((a, b) => a.idTurma - b.idTurma).map(t => t.idTurma).filter(Boolean).join(", ")}`);
     const opcao = +prompt("Deseja ver os alunos de alguma turma especifica ?\n1 - Sim 2 - Não");
     if (opcao == 1) {
         const idTurma = +prompt("Informe o ID da turma");
@@ -346,6 +358,37 @@ function mostrarTurmas() {
     return
 }
 
-const turmasCadastradas = [2]
+function gerarRelatorio() {
+    let qtdeAlunos = 0
+
+    for (let i = 0; i < turmas.length; i++) {
+        qtdeAlunos += turmas[i].alunos.length
+    }
+    console.log(`A quantidade total de alunos cadastrados é: ${qtdeAlunos}`)
+    console.log(`A quantidade total de turmas cadastradas é: ${turmasCadastradas.length}`)
+    console.log("Os alunos abaixo estão com a nota na média esperada:")
+    for (let i = 0; i < turmas.length; i++) {
+        turmas[i].alunos.map(aluno => {
+            if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 >= 6) {
+                console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                console.log(`Média do aluno: ${aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5}`)
+            }
+        })
+        console.log("Os alunos acima estão com a nota na média esperada")
+        console.log('\n')
+        console.log("Os alunos abaixo não estão com a nota abaixo da média esperada:")
+        for (let i = 0; i < turmas.length; i++) {
+            turmas[i].alunos.map(aluno => {
+                if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 < 6) {
+                    console.log(`Nome Completo: ${aluno.nome} ${aluno.sobrenome} `)
+                    console.log(`Média do aluno: ${aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5}\n`)
+                }
+            })
+        }
+        console.log("Os alunos acima não estão com a nota abaixo da média esperada")
+    }
+}
+
+const turmasCadastradas = [{idTurma: 2, maximoDeAlunos: 5}]
 const turmas = [{ idTurma: 2, alunos: [{ nome: "Eder", sobrenome: "dos Santos", email: "edesvon@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "de Almeida", email: "eder@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: true }, { nome: "Eder", sobrenome: "dos Santos", email: "ede@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 10, 10, 5], ativo: false }, { nome: "Eder", sobrenome: "dos Santos", email: "edersantos@gmail.com", turma: 2, nascimento: "01/01/2000", notas: [5, 5, 5, 5, 5], ativo: false }] }]
 let tentativas = false
