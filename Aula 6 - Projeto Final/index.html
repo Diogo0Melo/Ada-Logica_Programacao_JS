@@ -4,23 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@800&display=swap" rel="stylesheet">
     <script src="projeto_final.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Source Code Pro','Gill Sans', 'Gill Sans MT', monospace;
         }
+
         body {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             font-size: 16px;
-            background-color: gray;
+            background-color: rgb(70, 70, 70);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
         }
+
         .container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -30,6 +34,7 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
+
         .opcao {
             display: flex;
             justify-content: center;
@@ -37,15 +42,16 @@
             border-radius: 5px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
+
         button {
             background-color: chartreuse;
             color: black;
             width: 100%;
-            padding: 20px 30px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             transition: background-color 0.3s ease;
         }
@@ -55,15 +61,23 @@
             background-color: darkblue;
             color: chartreuse;
         }
+
         .opcao span {
             color: white;
         }
+
+        .opcao:last-child, .opcao:first-child {
+            grid-column: span 2;
+        }
     </style>
-    <title></title>
+    <title>CRUD com JS</title>
 </head>
 
 <body>
     <div class="container">
+        <div class=" opcao">
+            <button>Funções Disponíveis</button>
+        </div>
         <div class="opcao">
             <button onclick="cadastrarTurma()">cadastrarTurma<span>()</span></button>
         </div>
@@ -71,19 +85,20 @@
             <button onclick="cadastrarAluno()">cadastrarAluno<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="removerAluno()">removerAluno<span>()</span> </button>
+            <button onclick="mostrarTurmas()">mostrarTurmas<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="atualizarCadastroAluno()">atualizarCadastroAluno<span>()</span></button>
+
+            <button onclick="mostrarAlunos()">mostrarAlunos<span>()</span></button>
         </div>
         <div class="opcao">
             <button onclick="buscarAluno()">buscarAluno<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="mostrarAlunos()">mostrarAlunos<span>()</span></button>
+            <button onclick="atualizarCadastroAluno()">atualizarCadastroAluno<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="mostrarTurmas()">mostrarTurmas<span>()</span></button>
+            <button onclick="removerAluno()">removerAluno<span>()</span> </button>
         </div>
         <div class="opcao">
             <button onclick="gerarRelatorio()">gerarRelatorio<span>()</span></button>
