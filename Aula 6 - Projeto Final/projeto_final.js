@@ -157,7 +157,7 @@ function pegarIdade() {
         if (!dia) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
         const mes = +prompt('Informe o mês do nascimento do aluno. [Entre 1 e 12]');
         if (!mes) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
-        const ano = +prompt('Informe o ano do nascimento do aluno. [Entre 1900 e 2022]');
+        const ano = +prompt('Informe o ano do nascimento do aluno. [A partir de 1900]');
         if (!ano) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
         else if (isNaN(dia) || isNaN(mes) || isNaN(ano) || dia < 1 || dia > 31 || mes < 1 || mes > 12 || ano < 1900 || ano > new Date().getFullYear()) {
             console.warn(`A data de nascimento ${dia + "/" + mes + "/" + ano} é inválida.\nTente novamente.`);
@@ -168,7 +168,7 @@ function pegarIdade() {
             console.warn("O aluno precisa ter ao menos 16 anos para ser cadastrado.");
             continue
         }
-        const idadeFormatada = (dia + "/" + mes + "/" + ano)
+        const idadeFormatada = (`${String(dia).length === 2 ? dia : `0${dia}`}/${String(mes).length === 2 ? mes : `0${mes}`}/${ano}`)
         console.log(`Data de nascimento ${idadeFormatada} foi cadastrada com sucesso.`)
         return idadeFormatada;
     }
@@ -394,6 +394,14 @@ function mostrarAlunos(opcao1 = 0) {
 
 function mostrarTurmas() {
     console.log(`Turmas cadastradas: Turma ${turmas.sort((a, b) => a.idTurma - b.idTurma).map(t => t.idTurma).filter(Boolean).join(", ")}`);
+    if(turmas.find(t => t.maximoDeAlunos == t.alunos.length)){
+        const turmasCheias = []
+        turmas.map(t => {
+            t.maximoDeAlunos == t.alunos.length ? turmasCheias.push(t.idTurma) : ''
+        })
+        if (turmasCheias.length == 1) console.log(`A turma ${turmasCheias.join(', ')} está cheia.`)
+        else console.log(`As turmas ${turmasCheias.join(', ')} estão cheias.`)
+    }
     const opcao = +prompt("Deseja ver os alunos de alguma turma especifica ?\n1 - Sim 2 - Não");
     if (opcao == 1) {
         const idTurma = +prompt("Informe o ID da turma");
