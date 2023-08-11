@@ -315,7 +315,8 @@ function mostrarAlunos(opcao1 = 0) {
         case 2:
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
-                console.log(`Turma ${turmas[i].idTurma}:\n `)
+                const ativo = turmas[i].alunos.find(a => a.ativo == true)
+                if(!!ativo) console.log(`Turma ${turmas[i].idTurma}:\n `)
                 turmas[i].alunos.map(aluno => {
                     if (aluno.ativo) {
                         console.log(`Aluno ${j + 1}:`)
@@ -331,7 +332,8 @@ function mostrarAlunos(opcao1 = 0) {
         case 3:
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
-                console.log(`Turma ${turmas[i].idTurma}:\n `)
+                const ativo = turmas[i].alunos.find(a => a.ativo == false)
+                if(!!ativo) console.log(`Turma ${turmas[i].idTurma}:\n `)
                 turmas[i].alunos.map(aluno => {
                     if (!aluno.ativo) {
                         console.log(`Aluno ${j += 1}:`)
@@ -347,7 +349,8 @@ function mostrarAlunos(opcao1 = 0) {
         case 4:
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
-                console.log(`Turma ${turmas[i].idTurma}:\n `)
+                const media = turmas[i].alunos.find(a => a.notas.reduce((acc, curr) => acc + curr, 0) / 5 >= 6)
+                if(!!media) console.log(`Turma ${turmas[i].idTurma}:\n `)
                 turmas[i].alunos.map(aluno => {
                     if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 >= 6) {
                         console.log(`Aluno ${j += 1}:`)
@@ -363,7 +366,8 @@ function mostrarAlunos(opcao1 = 0) {
         case 5:
             for (let i = 0; i < turmas.length; i++) {
                 let j = 0
-                console.log(`Turma ${turmas[i].idTurma}:\n `)
+                const media = turmas[i].alunos.find(a => a.notas.reduce((acc, curr) => acc + curr, 0) / 5 < 6)
+                if(!!media) console.log(`Turma ${turmas[i].idTurma}:\n `)
                 turmas[i].alunos.map(aluno => {
                     if (aluno.notas.reduce((acc, curr) => acc + curr, 0) / 5 < 6) {
                         console.log(`Aluno ${j += 1}:`)
