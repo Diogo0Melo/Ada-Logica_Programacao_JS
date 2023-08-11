@@ -82,9 +82,17 @@ function pegarEmail() {
 
         const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]")
         if (!email) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
-        if (!email.length || email.split("").filter(Boolean).find((n) => /\s|[!#$%^&*()+\=\[\]{};':"\\|,<>\/?]/.test(n)) || !email.includes("@") || !email.includes(".") || turmas[turmas.findIndex(t => t.alunos)].alunos.find(a => a.email == email)) {
+        else if (!email.length || email.split("").filter(Boolean).find((n) => /\s|[!#$%^&*()+\=\[\]{};':"\\|,<>\/?]/.test(n))) {
             console.warn(`O email ${email} é inválido.\nTente novamente.`);
             continue;
+        }
+        else if (!email.includes("@") || !email.includes(".")) {
+            console.warn(`O email precisa incluir um '@' e um '.'\'nTente novamente.`);
+            continue
+        }
+        else if (turmas[turmas.findIndex(t => t.alunos)].alunos.find(a => a.email == email)) {
+            console.warn(`O email ${email} já foi cadastrado.\nTente novamente.`);
+            continue
         }
         console.log(`O email ${email} foi cadastrado com sucesso.`);
         return email;
@@ -114,12 +122,15 @@ function pegarTurma() {
     }
 }
 
-function pegarClassificacao(turma) {
+function pegarClassificacao(turma, classificacaoTurma = 0) {
     for (let i = 0; i <= 3; i++) {
         if (i === 3 || tentativas) return tentativas = true
 
-        const classificacaoPergunta = prompt("Informe a classificação do aluno [A, B, C ou D]")
-        if (!classificacaoPergunta) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
+        let classificacaoPergunta = classificacaoTurma
+        if (classificacaoTurma == 0) {
+            classificacaoPergunta = prompt("Informe a classificação do aluno [Entre A, B, C ou D]");
+            if (!classificacaoPergunta) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
+        }
         const classificacao = classificacaoPergunta.toUpperCase().trim();
         if (classificacao !== "A" && classificacao !== "B" && classificacao !== "C" && classificacao !== "D") {
             console.warn(`A classificação ${classificacao} é inválida.\nTente novamente.`);
@@ -230,16 +241,15 @@ function atualizarCadastroAluno() {
                         return aluno.email = email;
                     case 4:
                         const turma = pegarTurma();
-                        if (aluno.classificacao == "A" || aluno.classificacao == "D") {
-                            if (turmas[turmas.findIndex(t => t.idTurma == turma)].alunos.find(a => a.classificacao == "B" || a.classificacao == "C")) return console.warn(`O aluno ${aluno.nome + " " + aluno.sobrenome} com a classificação ${aluno.classificacao} não pode ser inserido na mesma turma que alunos com a classificação B ou C.`);
+                        const classificacao = pegarClassificacao(turma, aluno.classificacao)
+                        if (classificacao == "A" || classificacao == "D" || classificacao == "B" || classificacao == "C") {
+                            tentativas = false
+                            console.log(`A turma do aluno foi alterada com sucesso de ${aluno.turma} para ${turma}.`);
+                            aluno.turma = turma;
+                            turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
+                            return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
                         }
-                        else if (aluno.classificacao == "B" || aluno.classificacao == "C") {
-                            if (turmas[turmas.findIndex(t => t.idTurma == turma)].alunos.find(a => a.classificacao == "A" || a.classificacao == "D")) return console.warn(`O aluno ${aluno.nome + " " + aluno.sobrenome} com a classificação ${aluno.classificacao} não pode ser inserido na mesma turma que alunos com a classificação A ou D.`);
-                        }
-                        console.log(`A turma do aluno foi alterada com sucesso de ${aluno.turma} para ${turma}.`);
-                        aluno.turma = turma;
-                        turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.pop(aluno)
-                        return turmas.find(t => t.idTurma == aluno.turma).alunos.push(aluno);
+                        return tentativas = false
                     case 5:
                         const nascimento = pegarIdade();
                         console.log(`A data de nascimento ${aluno.nascimento} foi alterada com sucesso para ${nascimento}.`);
