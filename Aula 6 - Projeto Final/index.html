@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Source Code Pro','Gill Sans', 'Gill Sans MT', monospace;
+            font-family: 'Source Code Pro', 'Gill Sans', 'Gill Sans MT', monospace;
         }
 
         body {
@@ -66,7 +66,8 @@
             color: white;
         }
 
-        .opcao:last-child, .opcao:first-child {
+        .opcao:last-child,
+        .opcao:first-child {
             grid-column: span 2;
         }
     </style>
@@ -97,10 +98,13 @@
             <button onclick="atualizarAluno()">atualizarAluno<span>()</span></button>
         </div>
         <div class="opcao">
-            <button onclick="buscarAluno()">buscarAluno<span>()</span></button>
+            <button onclick="removerTurma()">removerTurma<span>()</span></button>
         </div>
         <div class="opcao">
             <button onclick="removerAluno()">removerAluno<span>()</span> </button>
+        </div>
+        <div class="opcao">
+            <button onclick="buscarAluno()">buscarAluno<span>()</span></button>
         </div>
         <div class="opcao">
             <button onclick="gerarRelatorio()">gerarRelatorio<span>()</span></button>
