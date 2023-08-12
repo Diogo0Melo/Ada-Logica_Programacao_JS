@@ -1,9 +1,9 @@
 function cadastrarTurma() {
     for (let i = 0; i <= 3; i++) {
-        if (i === 3 || tentativas) return console.error(`Excesso de tentativas, programa encerrado!\n Nenhuma turma foi cadastrada`);
+        if (i === 3) return console.error(`Excesso de tentativas, programa encerrado!\n Nenhuma turma foi cadastrada`);
 
         const idTurma = +prompt("Informe o ID da turma. [Entre 1 e 10]");
-        if (!idTurma) return console.warn(`Nenhuma turma foi cadastrada. programa encerrado!`);
+        if (!idTurma) return console.error(`Nenhuma turma foi cadastrada. Programa encerrado!`);
         else if (isNaN(idTurma) || idTurma < 1 || idTurma > 10) {
             console.warn(`A turma ${idTurma} é inválida.\nTente novamente.`);
             continue;
@@ -14,7 +14,8 @@ function cadastrarTurma() {
         }
 
         const maximoDeAlunos = +prompt(`Informe o número máximo de alunos para a turma ${idTurma}. [Entre 5 e 10]`);
-        if (isNaN(maximoDeAlunos) || maximoDeAlunos < 5 || maximoDeAlunos > 10) {
+        if (!maximoDeAlunos) return console.error(`Nenhuma turma foi cadastrada. Programa encerrado!`);
+        else if (isNaN(maximoDeAlunos) || maximoDeAlunos < 5 || maximoDeAlunos > 10) {
             console.warn(`O máximo de alunos ${maximoDeAlunos} para a turma ${idTurma} é inválido.\nTente novamente.`);
             continue
         }
@@ -29,7 +30,7 @@ function mostrarTurmas() {
         turmas.map(t => {
             t.maximoDeAlunos == t.alunos.length ? turmasCheias.push(t.idTurma) : ''
         })
-        if (turmasCheias.length == 1) console.log(`A turma ${turmasCheias.join(', ')} está cheia.`)
+        if (turmasCheias.length == 1) console.log(`A turma ${turmasCheias.join()} está cheia.`)
         else console.log(`As turmas ${turmasCheias.join(', ')} estão cheias.`)
     }
     const opcao = +prompt("Deseja ver a quantidade de alunos de alguma turma especifica ?\n1 - Sim 2 - Não");
@@ -61,12 +62,12 @@ function mostrarTurmas() {
 }
 function atualizarTurma() {
     const idTurma = +prompt("Informe o ID da turma que deseja atualizar.\n[Entre 1 e 10 que possua cadastro]");
-    if (!idTurma) return console.warn('Nenhuma turma foi atualizada. Programa encerrado!')
+    if (!idTurma) return console.error('Nenhuma turma foi atualizada. Programa encerrado!')
     else if (turmas.find(t => t.idTurma == idTurma)) {
         let confirmacao;
         if (turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.length > 0) {
             confirmacao = +prompt(`A turma ${idTurma} possui alunos, deseja atualizar mesmo assim?\n1 - sim 2 - não [Os alunos também serão atualizados]`);
-            if (confirmacao === 2) return console.warn(`A turma ${idTurma} não foi atualizada.`);
+            if (confirmacao > 1 || confirmacao < 1 || isNaN(confirmacao)) return console.warn(`A turma ${idTurma} não foi atualizada.`);
         }
         const opcao = +prompt('Qual item da turma deseja atualizar?\n1 - ID 2 - Máximo de alunos')
         switch (opcao) {
@@ -89,13 +90,14 @@ function atualizarTurma() {
                 return console.error('Opção inválida.');
         }
     }
+    else if (idTurma < 1 || idTurma > 10) return console.warn(`A turma ${idTurma} é inválida.`);
     else return console.warn(`A turma ${idTurma} não foi cadastrada.`);
 }
 function removerTurma() {
     const idTurma = +prompt("Informe o ID da turma que deseja remover.\n[Entre 1 e 10 que possua cadastro]");
     if (!idTurma) return console.error('Programa encerrado! Nenhuma turma foi removida.')
     else if (turmas.find(t => t.idTurma === idTurma)) {
-        if (turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.length > 0) return console.warn(`A turma ${idTurma} possui alunos, não pode ser removida.`);
+        if (turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.length > 0) return console.warn(`A turma ${idTurma} não pode ser removida pois possui alunos.`);
         console.log(`A turma ${idTurma} foi removida com sucesso.`);
         return turmas.pop(turmas.find(t => t.idTurma == idTurma));
     }
@@ -127,7 +129,7 @@ function pegarNome() {
 
         const nome = prompt("Informe o nome do aluno. [Exemplo: Andreo]")
         if (!nome) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
-        else if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s|[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(n))) {
+        else if (!nome.length || nome.split("").filter(Boolean).find((n) => /\d|\s|[!@#$%ª¹²³£¢¬º§°^&*()_+\-\=\[\]{};':"\\|,.<>\/?]/.test(n))) {
             console.warn(`O nome ${nome} é inválido.\nTente novamente.`);
             continue
         }
@@ -142,8 +144,8 @@ function pegarSobrenome() {
 
         const sobrenome = prompt("Informe o sobrenome do aluno [Exemplo: Fernades Ferraz de Almeida]")
         if (!sobrenome) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
-        else if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d|[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(n))) {
-            alert(`O nome ${sobrenome} é inválido.\nTente novamente.`);
+        else if (!sobrenome.length || sobrenome.split("").filter(Boolean).find((n) => /\d|[!@#$%ª¹²³£¢¬º§°^&*()_+\-\=\[\]{};':"\\|,.<>\/?]/.test(n))) {
+            console.warn(`O sobrenome ${sobrenome} é inválido.\nTente novamente.`);
             continue;
         }
         const sobrenomeFormatado = sobrenome.trim().toLowerCase().replace(/\s+/g, ' ')
@@ -157,12 +159,12 @@ function pegarEmail() {
 
         const email = prompt("Informe o email do aluno [Exemplo: andreo@example.com]")
         if (!email) throw console.error('Programa encerrado!\nNenhum aluno foi cadastrado.')
-        else if (!email.length || email.split("").filter(Boolean).find((n) => /\s|[!#$%^&*()+\=\[\]{};':"\\|,<>\/?]/.test(n))) {
+        else if (!email.length || email.split("").filter(Boolean).find((n) => /\s|[!#$%~ª¹²³£¢¬º§°´`^&*()+\=\[\]{};':"\\|,<>\/?]/.test(n))) {
             console.warn(`O email ${email} é inválido.\nTente novamente.`);
             continue;
         }
         else if (!email.includes("@") || !email.includes(".")) {
-            console.warn(`O email precisa incluir um '@' e um '.'\'nTente novamente.`);
+            console.warn(`O email precisa incluir um '@' e um '.'!\nTente novamente.`);
             continue
         }
         else if (turmas[turmas.findIndex(t => t.alunos)].alunos.find(a => a.email == email)) {
@@ -241,7 +243,7 @@ function pegarIdade() {
             console.warn("O aluno precisa ter ao menos 16 anos para ser cadastrado.");
             continue
         }
-        const idadeFormatada = (`${String(dia).length === 2 ? dia : `0${dia}`}/${String(mes).length === 2 ? mes : `0${mes}`}/${ano}`)
+        const idadeFormatada = (`${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${ano}`)
         console.log(`Data de nascimento ${idadeFormatada} foi cadastrada com sucesso.`)
         return idadeFormatada;
     }
@@ -271,7 +273,7 @@ function mostrarAlunos(opcaoParametro) {
     turmas.sort((a, b) => a.idTurma - b.idTurma)
     let opcao;
     if (!opcaoParametro) {
-        opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - abaixo da média 6 - Quantidade de alunos");
+        opcao = +prompt("Quais alunos deseja ver?\n1 - Todos 2 - Ativos 3 - Inativos 4 - Na média 5 - Abaixo da média 6 - Quantidade de alunos");
     }
     switch (opcao || opcaoParametro) {
         case 1:
@@ -428,15 +430,15 @@ function atualizarAluno() {
             default:
                 console.error("Opção inválida. Encerrando programa! ")
         }
-    } else console.error(`Turma ${idTurma} ou email do aluno ${email} estão incorretos.\nVerifique as infomações e tente novamente\nPrograma encerrado!`)
+    } else console.error(`Turma ${idTurma} ou email do aluno ${email} estão incorretos!\nVerifique as infomações e tente novamente.\nPrograma encerrado.`)
 }
 function removerAluno() {
     const idTurma = +prompt("Informe o ID da turma do aluno");
     if (!idTurma) return console.error('Programa encerrado!\nNenhum aluno foi removido.')
     const email = prompt("Informe o email do aluno");
+    const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
     if (!email) return console.error('Programa encerrado!\nNenhum aluno foi removido.')
-    else if (turmas.find(t => t.idTurma == idTurma)) {
-        const aluno = turmas[turmas.findIndex(t => t.idTurma == idTurma)].alunos.find(a => a.email == email)
+    else if (turmas.find(t => t.idTurma == idTurma) && !!aluno) {  
         const opcao = +prompt(`Deseja remover o aluno ${aluno.nome + " " + aluno.sobrenome} cujo o email é ${aluno.email} ? 1 - Sim 2 - Não`);
         switch (opcao) {
             case 1:
