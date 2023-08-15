@@ -410,7 +410,8 @@ function atualizarAluno() {
                             tentativas = false;
                             console.log(`A turma do aluno foi alterada com sucesso de ${aluno.turma} para ${turma}.`);
                             aluno.turma = turma;
-                            turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.pop(aluno);
+                            const alunoIndex = turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.findIndex((a) => a.email == email);
+                            turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.splice(alunoIndex, 1);
                             return turmas.find((t) => t.idTurma == aluno.turma).alunos.push(aluno);
                         }
                         return (tentativas = false);
