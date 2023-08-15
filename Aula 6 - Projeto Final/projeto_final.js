@@ -104,7 +104,7 @@ function removerTurma() {
     else if (turmas.find((t) => t.idTurma === idTurma)) {
         if (turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.length > 0) return console.warn(`A turma ${idTurma} não pode ser removida pois possui alunos.`);
         console.log(`A turma ${idTurma} foi removida com sucesso.`);
-        return turmas.pop(turmas.find((t) => t.idTurma == idTurma));
+        return turmas.splice(turmas.findIndex((t) => t.idTurma == idTurma), 1);
     } else return console.warn(`A turma ${idTurma} não foi cadastrada.`);
 }
 function cadastrarAluno() {
@@ -453,7 +453,9 @@ function removerAluno() {
         const opcao = +prompt(`Deseja remover o aluno ${aluno.nome + " " + aluno.sobrenome} com o email ${aluno.email} ? 1 - Sim 2 - Não`);
         switch (opcao) {
             case 1:
-                return turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.pop(aluno);
+                const alunoIndex = turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.findIndex((a) => a.email == email);
+                console.log(`O aluno ${aluno.nome} ${aluno.sobrenome} com o email ${aluno.email} foi removido com sucesso.`)
+                return turmas[turmas.findIndex((t) => t.idTurma == idTurma)].alunos.splice(alunoIndex, 1);
             case 2:
                 return console.warn("Programa encerrado!");
             default:
@@ -472,7 +474,7 @@ function buscarAluno(idTurmaParametro, emailParametro) {
     const aluno = turmas[turmas.findIndex((t) => t.idTurma == idTurma || t.idTurma == idTurmaParametro)].alunos.find((a) => a.email == email || a.email == emailParametro);
     if (aluno) {
         console.log("Aluno encontrado.");
-        console.log(`Informações do aluno:\nNome Completo: ${aluno.nome + " " + aluno.sobrenome}\nEmail: ${aluno.email}\nTurma: ${aluno.turma}\nClassificação: ${aluno.classificacao}\nData de nascimento: ${aluno.nascimento}\nNotas: ${aluno.notas}\n Ativo: ${aluno.ativo}`);
+        console.log(`Informações do aluno:\nNome Completo: ${aluno.nome + " " + aluno.sobrenome}\nEmail: ${aluno.email}\nTurma: ${aluno.turma}\nClassificação: ${aluno.classificacao}\nData de nascimento: ${aluno.nascimento}\nNotas: ${aluno.notas}\nAtivo: ${aluno.ativo}`);
     } else return console.warn(`Aluno não encontrado. Verifique o email informado ${email} e tente novamente.`);
 }
 function gerarRelatorio() {
