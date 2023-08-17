@@ -1,6 +1,8 @@
 class Turma {
-    constructor() {
-        const [idTurma, maximoDeAlunos] = this.cadastrarTurma();
+    constructor(idTurma, maximoDeAlunos) {
+        if (idTurma === undefined && maximoDeAlunos === undefined) {
+            var [idTurma, maximoDeAlunos] = this.cadastrarTurma();
+        }
         this.idTurma = idTurma;
         this.maximoDeAlunos = maximoDeAlunos;
         this.alunos = [];
@@ -10,23 +12,29 @@ class Turma {
         const idTurma = +prompt("Informe o ID da turma");
         if (verificacoes(idTurma) === null) throw "Programa encerrado!";
         const maximoDeAlunos = +prompt(`Informe o número máximo de alunos para a turma ${idTurma}. [Entre 5 e 10]`);
-        if (verificacoes(maximoDeAlunos) === null) throw "Programa encerrado!";
+        if (verificacoes(undefined, maximoDeAlunos) === null) throw "Programa encerrado!";
         return [idTurma, maximoDeAlunos];
     }
     mostrarTurma() {
-        console.log(`ID da turma: ${this.idTurma}\nNúmero máximo de alunos: ${this.maximoDeAlunos}\nAlunos: ${this.alunos}`);
+        const turmasCadastradas = [];
+        turmas.map((t) => {
+            turmasCadastradas.push(t.idTurma);
+        });
+        console.log(`Turmas cadastradas: ${turmasCadastradas.length > 1 ? "Turmas:" : "Turma"} ${turmasCadastradas.sort((a, b) => a - b).join(", ")}`);
+        console.log(`ID da turma: ${this.idTurma}\nNúmero máximo de alunos: ${this.maximoDeAlunos}\nAlunos:`);
+        this.alunos.forEach((a) => console.log(`Nome completo: ${a.nome} ${a.sobrenome}\nEmail: ${a.email}`));
     }
     atualizarTurma() {
         const opcao = +prompt("Qual item da turma deseja atualizar?\n1 - ID 2 - Máximo de alunos");
         switch (opcao) {
             case 1:
                 const novoIdTurma = +prompt(`Informe o novo ID da turma ${this.idTurma}. [Entre 1 e 10]`);
-                if(verificacoes(novoIdTurma) === null) throw "Programa encerrado!";
+                if (verificacoes(novoIdTurma) === null) throw "Programa encerrado!";
                 this.idTurma = novoIdTurma;
                 break;
             case 2:
                 const novoMaximoDeAlunos = +prompt(`Informe o novo número máximo de alunos para a turma ${this.idTurma}. [Entre 5 e 10]`);
-                if(verificacoes(novoMaximoDeAlunos) === null) throw "Programa encerrado!";
+                if (verificacoes(novoMaximoDeAlunos) === null) throw "Programa encerrado!";
                 this.maximoDeAlunos = novoMaximoDeAlunos;
                 break;
             default:
@@ -41,6 +49,7 @@ class Turma {
 function turma() {
     const idTurma = +prompt("Informe o ID da turma");
     const turma = turmas.find((t) => t.idTurma == idTurma);
+    if (turma === undefined) throw "Turma não encontrada";
     return turma;
 }
 function verificacoes(idTurma, maximoDeAlunos, nome, sobrenome, email, turma, classificacao, nascimento, notas, ativo) {
@@ -71,94 +80,90 @@ function verificacoes(idTurma, maximoDeAlunos, nome, sobrenome, email, turma, cl
         return nascimento;
     } else if (notas !== undefined) {
         return notas;
+    } else if (ativo !== undefined) {
     }
 }
-
-const turmas = [
+const turmas = [new Turma(5, 10)];
+console.log(turmas);
+turmas[0].alunos.push(
     {
-        idTurma: 5,
-        maximoDeAlunos: 10,
-        alunos: [
-            {
-                nome: "Pedro",
-                sobrenome: "santos da silva",
-                email: "pedro@gmail.com",
-                turma: 5,
-                classificacao: "A",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 8, 9, 10],
-                ativo: true,
-            },
-            {
-                nome: "Maria",
-                sobrenome: "pereira",
-                email: "maria@gmail.com",
-                turma: 5,
-                classificacao: "A",
-                nascimento: "01/01/2000",
-                notas: [6, 5, 5, 2, 10],
-                ativo: true,
-            },
-            {
-                nome: "Joaquim",
-                sobrenome: "guilherme ferreira",
-                email: "joaquim@gmail.com",
-                turma: 5,
-                classificacao: "D",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 3, 5, 2],
-                ativo: true,
-            },
-            {
-                nome: "Ana",
-                sobrenome: "santos",
-                email: "ana@gmail.com",
-                turma: 5,
-                classificacao: "D",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 4, 4, 4],
-                ativo: true,
-            },
-            {
-                nome: "Pedro",
-                sobrenome: "santos da silva",
-                email: "pedro2@gmail.com",
-                turma: 5,
-                classificacao: "A",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 8, 9, 10],
-                ativo: true,
-            },
-            {
-                nome: "Maria",
-                sobrenome: "pereira",
-                email: "maria2@gmail.com",
-                turma: 5,
-                classificacao: "A",
-                nascimento: "01/01/2000",
-                notas: [6, 5, 5, 2, 10],
-                ativo: false,
-            },
-            {
-                nome: "Joaquim",
-                sobrenome: "guilherme ferreira",
-                email: "joaquim2@gmail.com",
-                turma: 5,
-                classificacao: "D",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 3, 5, 2],
-                ativo: false,
-            },
-            {
-                nome: "Ana",
-                sobrenome: "santos",
-                email: "ana2@gmail.com",
-                turma: 5,
-                classificacao: "D",
-                nascimento: "01/01/2000",
-                notas: [1, 7, 4, 4, 4],
-                ativo: false,
-            },
-        ],
+        nome: "Pedro",
+        sobrenome: "santos da silva",
+        email: "pedro@gmail.com",
+        turma: 5,
+        classificacao: "A",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 8, 9, 10],
+        ativo: true,
     },
-];
+    {
+        nome: "Maria",
+        sobrenome: "pereira",
+        email: "maria@gmail.com",
+        turma: 5,
+        classificacao: "A",
+        nascimento: "01/01/2000",
+        notas: [6, 5, 5, 2, 10],
+        ativo: true,
+    },
+    {
+        nome: "Joaquim",
+        sobrenome: "guilherme ferreira",
+        email: "joaquim@gmail.com",
+        turma: 5,
+        classificacao: "D",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 3, 5, 2],
+        ativo: true,
+    },
+    {
+        nome: "Ana",
+        sobrenome: "santos",
+        email: "ana@gmail.com",
+        turma: 5,
+        classificacao: "D",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 4, 4, 4],
+        ativo: true,
+    },
+    {
+        nome: "Pedro",
+        sobrenome: "santos da silva",
+        email: "pedro2@gmail.com",
+        turma: 5,
+        classificacao: "A",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 8, 9, 10],
+        ativo: true,
+    },
+    {
+        nome: "Maria",
+        sobrenome: "pereira",
+        email: "maria2@gmail.com",
+        turma: 5,
+        classificacao: "A",
+        nascimento: "01/01/2000",
+        notas: [6, 5, 5, 2, 10],
+        ativo: false,
+    },
+    {
+        nome: "Joaquim",
+        sobrenome: "guilherme ferreira",
+        email: "joaquim2@gmail.com",
+        turma: 5,
+        classificacao: "D",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 3, 5, 2],
+        ativo: false,
+    },
+    {
+        nome: "Ana",
+        sobrenome: "santos",
+        email: "ana2@gmail.com",
+        turma: 5,
+        classificacao: "D",
+        nascimento: "01/01/2000",
+        notas: [1, 7, 4, 4, 4],
+        ativo: false,
+    }
+);
