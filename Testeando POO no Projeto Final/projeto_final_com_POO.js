@@ -10,9 +10,9 @@ class Turma {
 
     cadastrarTurma() {
         const idTurma = +prompt("Informe o ID da turma");
-        if (verificacoes(idTurma) === null) throw "Programa encerrado!";
+        if (verificacoes({idTurma: idTurma}) === null) throw "Programa encerrado!";
         const maximoDeAlunos = +prompt(`Informe o número máximo de alunos para a turma ${idTurma}. [Entre 5 e 10]`);
-        if (verificacoes(undefined, maximoDeAlunos) === null) throw "Programa encerrado!";
+        if (verificacoes({maximoDeAlunos: maximoDeAlunos}) === null) throw "Programa encerrado!";
         return [idTurma, maximoDeAlunos];
     }
     mostrarTurma() {
@@ -29,12 +29,12 @@ class Turma {
         switch (opcao) {
             case 1:
                 const novoIdTurma = +prompt(`Informe o novo ID da turma ${this.idTurma}. [Entre 1 e 10]`);
-                if (verificacoes(novoIdTurma) === null) throw "Programa encerrado!";
+                if (verificacoes({idTurma: novoIdTurma}) === null) throw "Programa encerrado!";
                 this.idTurma = novoIdTurma;
                 break;
             case 2:
                 const novoMaximoDeAlunos = +prompt(`Informe o novo número máximo de alunos para a turma ${this.idTurma}. [Entre 5 e 10]`);
-                if (verificacoes(novoMaximoDeAlunos) === null) throw "Programa encerrado!";
+                if (verificacoes({maximoDeAlunos: novoMaximoDeAlunos}) === null) throw "Programa encerrado!";
                 this.maximoDeAlunos = novoMaximoDeAlunos;
                 break;
             default:
@@ -43,6 +43,7 @@ class Turma {
     }
     removerTurma() {
         const turmaIndex = turmas[turmas.findIndex((t) => t.idTurma == this.idTurma)];
+        if (this.alunos.length > 0)  throw `A turma ${this.idTurma} não pode ser removida pois possui alunos.`;
         turmas.splice(turmaIndex, 1);
     }
 }
@@ -52,7 +53,7 @@ function turma() {
     if (turma === undefined) throw "Turma não encontrada";
     return turma;
 }
-function verificacoes(idTurma, maximoDeAlunos, nome, sobrenome, email, turma, classificacao, nascimento, notas, ativo) {
+function verificacoes({idTurma, maximoDeAlunos, nome, sobrenome, email, turma, classificacao, nascimento, notas, ativo}) {
     if (idTurma !== undefined) {
         if (isNaN(idTurma) || idTurma < 1 || idTurma > 10) {
             console.warn(`A turma ${idTurma} é inválida.`);
@@ -63,7 +64,7 @@ function verificacoes(idTurma, maximoDeAlunos, nome, sobrenome, email, turma, cl
         } else return idTurma;
     } else if (maximoDeAlunos !== undefined) {
         if (isNaN(maximoDeAlunos) || maximoDeAlunos < 5 || maximoDeAlunos > 10) {
-            console.warn(`O máximo de alunos ${maximoDeAlunos} para a turma ${idTurma} é inválido.`);
+            console.warn(`O máximo de alunos ${maximoDeAlunos} para a turma é inválido.`);
             return null;
         } else return maximoDeAlunos;
     } else if (nome !== undefined) {
