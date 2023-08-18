@@ -67,6 +67,7 @@ class Aluno {
         const sobrenome = prompt("Informe o sobrenome do aluno").replace(/\s+/g, " ");
         if(validacoes({sobrenome: sobrenome}) === null) throw mensagemDeErro;
         console.log(`O sobrenome ${sobrenome}foi cadastrado com sucesso.`);
+        const email = prompt("Informe o email do aluno");
     }
 }
 function localizarTurma() {
