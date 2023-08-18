@@ -58,15 +58,53 @@ class Aluno {
         this.nascimento = nascimento;
         this.notas = notas;
         this.ativo = ativo;
+        turmas[turmas.findIndex((t) => t.idTurma == turma)].alunos.push(this);
     }
-    cadastrarAluno(){
+    cadastrarAluno() {
         const mensagemDeErro = "Programa encerrado!\nNenhum aluno foi cadastrado.";
-        const nome = prompt("Informe o nome do aluno");
-        if(validacoes({nome: nome}) === null) throw mensagemDeErro;
-        console.log(`O nome ${nome} foi cadastrado com sucesso.`);
-        const sobrenome = prompt("Informe o sobrenome do aluno").replace(/\s+/g, " ");
-        if(validacoes({sobrenome: sobrenome}) === null) throw mensagemDeErro;
-        console.log(`O sobrenome ${sobrenome}foi cadastrado com sucesso.`);
+
+        let nome = prompt("Informe o nome do aluno. [Exemplo: Silva]");
+        nome = validacoes({ nome: nome });
+        if (nome === null) throw mensagemDeErro;
+        console.log(`O nome ${nome} foi atribuído com sucesso.`);
+
+        let sobrenome = prompt("Informe o sobrenome do aluno. [Exemplo: silva da silva");
+        sobrenome = validacoes({ sobrenome: sobrenome });
+        if (sobrenome === null) throw mensagemDeErro;
+        console.log(`O sobrenome ${sobrenome} foi atribuído com sucesso.`);
+
+        let email = prompt("Informe o email do aluno. [Exemplo: example@example.com]");
+        email = validacoes({ email: email });
+        if (email === null) throw mensagemDeErro;
+        console.log(`O email ${email} foi atribuído com sucesso.`);
+
+        let turma = +prompt("Informe o ID da turma. [Entre 1 e 10 que possua cadastro]");
+        turma = validacoes({ turma: turma });
+        if (turma === null) throw mensagemDeErro;
+        console.log(`A turma ${turma} foi atribuída com sucesso.`);
+
+        let classificacao = prompt("Informe a classificação do aluno. [A, B, C ou D]");
+        classificacao = validacoes({ classificacao: classificacao, turma: turma });
+        if (classificacao === null) throw mensagemDeErro;
+        console.log(`A classificação ${classificacao} foi atribuída com sucesso.`);
+
+        let nascimento = prompt("Informe a data de nascimento do aluno. [Exemplo: 01/01/2000]");
+        nascimento = validacoes({ nascimento: nascimento });
+        if (nascimento === null) throw mensagemDeErro;
+        console.log(`A data de nascimento ${nascimento} foi atribuída com sucesso.`);
+
+        const notas = [];
+        for (let i = 0; i < 5; i++) {
+            let nota = +prompt(`Informe a ${i + 1}º nota do aluno. [De 0 a 10]`);
+            nota = validacoes({ nota: nota });
+            if (nota === null) throw mensagemDeErro;
+            notas.push(nota);
+        }
+        console.log(`As notas ${notas} foram atribuídas com sucesso.`);
+
+        const ativo = true;
+
+        return [nome, sobrenome, email, turma, classificacao, nascimento, notas, ativo];
     }
 }
 function localizarTurma() {
@@ -75,7 +113,7 @@ function localizarTurma() {
     if (turma === undefined) throw "Turma não encontrada";
     return turma;
 }
-function validacoes({ idTurma, maximoDeAlunos, nome, sobrenome, email, turma, classificacao, nascimento, notas, ativo }) {
+function validacoes({ idTurma, maximoDeAlunos, nome, sobrenome, email, turma, classificacao, nascimento, nota, ativo }) {
     if (idTurma !== undefined) {
         if (isNaN(idTurma) || idTurma < 1 || idTurma > 10) {
             console.warn(`A turma ${idTurma} é inválida.`);
@@ -91,27 +129,63 @@ function validacoes({ idTurma, maximoDeAlunos, nome, sobrenome, email, turma, cl
         } else return maximoDeAlunos;
     } else if (nome !== undefined) {
         const regex = /^[a-zA-ZéáàçõãúíÉÁÀÇÕÃÚÍ]+$/g;
-        if (regex.test(nome) && nome !== null){
+        if (regex.test(nome) && nome !== null) {
             const nomeFormatado = nome.slice(0, 1).toUpperCase() + nome.slice(1).toLowerCase();
             return nomeFormatado;
-        }
-        else return null
+        } else return null;
     } else if (sobrenome !== undefined) {
         const regex = /^[a-zA-Z' 'éáàçõãúíÉÁÀÇÕÃÚÍ]+$/g;
-        if (regex.test(sobrenome) && sobrenome !== null){
-            const sobrenomeFormatado = sobrenome.toLowerCase();
+        if (regex.test(sobrenome) && sobrenome !== null) {
+            const sobrenomeFormatado = sobrenome.toLowerCase().replace(/\s+/g, " ").trim();
             return sobrenomeFormatado;
-        }
+        } else return null;
     } else if (email !== undefined) {
-        return email;
-    } else if (turma !== undefined) {
-        return turma;
+        const regex = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/;
+        if (regex.test(email) && email !== null) {
+            return email;
+        } else return null;
+    } else if (turma !== undefined && classificacao === undefined) {
+        const turmaLocal = turmas.find((t) => t.idTurma === turma);
+        if (isNaN(turma) || turma < 1 || turma > 10) {
+            console.warn(`A turma ${turma} é inválida.`);
+            return null;
+        } else if (turmaLocal === undefined) {
+            console.warn(`A turma ${turma} não possui cadastro.`);
+            return null;
+        } else if (turmaLocal.maximoDeAlunos === turmaLocal.alunos.length) {
+            console.warn(`A turma ${turma} está lotada.`);
+            return null;
+        } else return turma;
     } else if (classificacao !== undefined) {
-        return classificacao;
+        const turmaLocal = turmas.find((t) => t.idTurma === turma);
+        const classificacaoLocal = classificacao.toUpperCase();
+        if (classificacaoLocal === "A" || classificacaoLocal === "D") {
+            if (turmaLocal.alunos.find((a) => a.classificacao !== "A" && a.classificacao !== "D")) {
+                console.warn(`Alunos com classificação ${classificacaoLocal} não podem estar na mesma turma que alunos com classificação A ou D.`);
+                return null;
+            } else return classificacaoLocal;
+        } else if (classificacaoLocal === "B" || classificacaoLocal === "C") {
+            if (turmaLocal.alunos.find((a) => a.classificacao !== "B" && a.classificacao !== "C")) {
+                console.warn(`Alunos com classificação ${classificacaoLocal} não podem estar na mesma turma que alunos com classificação B ou C.`);
+                return null;
+            } else return classificacaoLocal;
+        }else return null
     } else if (nascimento !== undefined) {
-        return nascimento;
-    } else if (notas !== undefined) {
-        return notas;
+        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20[01][0-9]|2022)$/;
+        const anoAtual = new Date().getFullYear();
+        const mesAtual = new Date().getMonth() + 1;
+        const diaAtual = new Date().getDate();
+        if (regex.test(nascimento) && nascimento !== null) {
+            const [dia, mes, ano] = nascimento.split("/");
+            const idade = anoAtual - ano - (mesAtual < mes || (mesAtual === mes && diaAtual < dia) ? 1 : 0);
+            if (idade >= 16) return nascimento;
+            else return null;
+        } else return null;
+    } else if (nota !== undefined) {
+        if (isNaN(nota) || nota < 0 || nota > 10) {
+            console.warn(`A nota ${nota} é inválida.`);
+            return null;
+        } else return nota;
     } else if (ativo !== undefined) {
     }
 }
